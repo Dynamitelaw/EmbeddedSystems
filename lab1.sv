@@ -13,7 +13,7 @@ module lab1( input logic        CLOCK_50,
 	     output logic [6:0] HEX0, HEX1, HEX2, HEX3, HEX4, HEX5
 	     );
 
-   logic [3:0] 		      a;         // Address
+   logic [3:0] 		      a = 0;         // Address
    logic [7:0] 		      din, dout; // RAM data in and out
    logic 		      we;        // RAM write enable
 
@@ -54,38 +54,75 @@ module controller(input logic        clk,
 		  output logic 	     we);
 
    // Replace these with your code
-   assign a = 8'b0;
+   //assign a = 8'b0;
    assign din = {KEY, ~KEY};
    assign we = 1'b1;
+   
+   reg buttonPressed;
+   
+   
+   always @(KEY[3] or KEY[2]) begin
+   	buttonPressed = !KEY[3] || !KEY[2];
+   end
+   /*
+   always @(KEY[3] or KEY[2]) begin
+   	if ((KEY[3] == 1) && (KEY[2] == 0)) begin
+   		a = 1;
+   	end
+   	if ((KEY[3] == 1) && (KEY[2] == 1)) begin
+   		a = 2;
+   	end
+   	if ((KEY[3] == 0) && (KEY[2] == 0)) begin
+   		a = 3;
+   	end
+   	if ((KEY[3] == 0) && (KEY[2] == 1)) begin
+   		a = 4;
+   	end
+   end
+   /*
+   reg buttonPressed;
 
-   //
-   //always @(KEY[3] or KEY[2]) begin
-
-   //end
+   always @(KEY[3] or KEY[2]) begin
+   	buttonPressed = KEY[3] || !KEY[2];
+   end
+   //assign buttonPressed = KEY[3] || KEY[2];
+   //Incriment or decriment address value
+   */
+   always @(posedge buttonPressed) begin  
+   	if ((KEY[3] == 1) && (KEY[2] == 1)) begin
+   		a <= a;
+   	end 	
+   	else if ((KEY[3] == 1) && (KEY[2] == 0)) begin
+   		a <= a - 1;
+   	end
+	else if ((KEY[3] == 0) && (KEY[2] == 1))  begin
+		a <= a + 1;
+	end
+		
+   end
+   //if ((KEY[3] == 0) && (KEY[2] == 1)) begin
 
 endmodule
 
+//Seven segment hex decoder
 module hex7seg(input logic [3:0] a,
 	       output logic [6:0] y);
 
    always @ (a) begin
    	case(a)
    		0 : y = 7'b100_0000;
-			1 : y = 7'b111_1001;
-			2 : y = 7'b010_0100;
-			3 : y = 7'b011_0000;
-			4 : y = 7'b001_1001;
-			5 : y = 7'b001_0010;
-			6 : y = 7'b000_0010;
-			7 : y = 7'b111_1000;
-			8 : y = 7'b000_0000;
-			9 : y = 7'b001_1000;
+		1 : y = 7'b111_1001;
+		2 : y = 7'b010_0100;
+		3 : y = 7'b011_0000;
+		4 : y = 7'b001_1001;
+		5 : y = 7'b001_0010;
+		6 : y = 7'b000_0010;
+		7 : y = 7'b111_1000;
+		8 : y = 7'b000_0000;
+		9 : y = 7'b001_1000;
    		default: y = 7'b000_0000;
    	endcase
    end
-
-   //assign y = {a[2:0],a}; // Replace this with your code
-
 endmodule
 
 // 16 X 8 synchronous RAM with old data read-during-write behavior
