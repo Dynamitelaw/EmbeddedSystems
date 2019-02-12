@@ -2,8 +2,9 @@
 //
 // Spring 2019
 //
-// By: Jose Rubianes &
-// Uni: jer2201
+// By: Jose Rubianes & Varun Varahabhotla
+// Uni: jer2201 & vv2282
+
 
 module lab1( input logic		  CLOCK_50,
 
@@ -17,12 +18,12 @@ module lab1( input logic		  CLOCK_50,
 	logic [7:0] din, dout; // RAM data in and out
 	logic we; // RAM write enable
 
-	logic 				clk;
+	logic clk;
 	assign clk = CLOCK_50;
 
 	
 	//Instantiate hex decoders
-	hex7seg h0( .a(a),.y(HEX0) ), // rightmost digit
+	hex7seg h0( .a(a),.y(HEX5) ), // rightmost digit
 		h1( .a(dout[7:4]), .y(HEX3) ), // left middle
 		h2( .a(dout[3:0]), .y(HEX2) ); // right middle
 			  
@@ -32,21 +33,23 @@ module lab1( input logic		  CLOCK_50,
 		.dout(dout),
 		.a(a),
 		.din(din),
-		.we(we) );
+		.we(we));
 
 	//Instantiate memory module
 	memory m( .clk(clk),
 		.a(a),
 		.din(din),
 		.we(we),
-		.dout(dout) );
+		.dout(dout));
 
-	assign HEX4 = 7'b111_1111; // Display a blank; LEDs are active-low
+	//Leave the rest of the displays blank
+	assign HEX4 = 7'b111_1111;
 	assign HEX1 = 7'b111_1111;
-	assign HEX5 = 7'b111_1111;
+	assign HEX0 = 7'b111_1111;
 
 endmodule
 
+//Controller module
 module controller(input logic clk,
 		  input logic [3:0] KEY,
 		  input logic [7:0] dout,
@@ -54,49 +57,43 @@ module controller(input logic clk,
 		  output logic [7:0] din,
 		  output logic we);
 
-	// Replace these with your code
-	//assign a = 8'b0;
-	//assign din = {KEY, ~KEY};
-	assign we = 1'b1;
-	
-	
+
 	//Debounce button inputs 
-	wire KEY3db;
-	wire KEY2db;
-	wire KEY1db;
-	wire KEY0db;
+	wire KEY3db, KEY2db, KEY1db, KEY0db;  //debounced buttons
+	debouncer db(.clk(clk), .buttonsIn(KEY), .buttonsOut({KEY3db, KEY2db, KEY1db, KEY0db}));
 	
-	debouncer db3(.clk(clk), .buttonIn(KEY[3]), .buttonOut(KEY3db));
-	debouncer db2(.clk(clk), .buttonIn(KEY[2]), .buttonOut(KEY2db));
-	debouncer db1(.clk(clk), .buttonIn(KEY[1]), .buttonOut(KEY1db));
-	debouncer db0(.clk(clk), .buttonIn(KEY[0]), .buttonOut(KEY0db));
 	
 	//Signal for when an address has been changed
-	reg addressButtonPressed;
-	assign addressButtonPressed = !KEY3db || !KEY2db;
-	
-	//Incriment or decriment address value
-	always @(posedge addressButtonPressed) begin  
-		if (!KEY3db) begin
-			a <= a + 1;
-		end
-		else if (!KEY2db) begin
-			a <= a - 1;	
-		end	
+	reg addressButtonPressed;	
+	always @(posedge clk) begin
+		addressButtonPressed <= !KEY3db | !KEY2db;
 	end
 	
-	//Signal for when an data been changed
+	//Incriment or decriment address value
+	always_ff @(posedge addressButtonPressed) begin
+		if (KEY2db && !KEY3db) begin
+			a <= a + 4'b1;
+		end
+		else if (!KEY2db && KEY3db) begin
+			a <= a - 4'b1;	
+		end		
+	end
+	
+	
+	//Signal for when an data should be changed
 	reg dataButtonPressed;
-	assign dataButtonPressed = !KEY1db || !KEY0db;
+	always @(posedge clk) begin
+		dataButtonPressed = !KEY1db | !KEY0db;
+	end
 	
 	//Incriment or decriment data value
-	//assign we = dataButtonPressed;
-	always @(posedge dataButtonPressed) begin  
-		if (!KEY1db) begin
-			din <= dout + 1;
+	assign we = dataButtonPressed;
+	always_ff @(posedge dataButtonPressed) begin  
+		if (KEY0db && !KEY1db) begin
+			din <= dout + 8'b1;
 		end
-		else if (!KEY0db) begin
-			din <= dout - 1;	
+		else if (!KEY0db && KEY1db) begin
+			din <= dout - 8'b1;	
 		end	
 	end
 
@@ -146,12 +143,16 @@ module memory(input logic clk,
 endmodule
 
 //Debouncer for push buttons
-module debouncer(input clk, input buttonIn, output reg buttonOut);
-	reg[20:0] timer = 0;
-	always @(posedge clk)
-		timer <= timer - 1'b1;
-	always @(posedge clk)
+module debouncer(input clk, input [3:0] buttonsIn, output logic [3:0] buttonsOut);
+	logic [20:0] timer = 21'b0;
+	
+	always_ff @(posedge clk) begin
+		timer <= timer - 21'b1;
+	end
+	
+	always_ff @(negedge clk) begin
 		if (timer == 0)
-			buttonOut <= buttonIn;
+			buttonsOut <= buttonsIn;
+	end
 
 endmodule
