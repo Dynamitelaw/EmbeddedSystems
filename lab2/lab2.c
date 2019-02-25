@@ -107,7 +107,7 @@ int main()
       if (packet.keycode[0] == 0x29) { /* ESC pressed? */
 	       break;
       }
-      if(packet.keycode[0]== keyBindings.KEY_ENTER)
+      if(packet.keycode[0]== KEY_ENTER)
       {
         int n = write(sockd, buffer, BUFFER_SIZE);
         fbPrintTextBox(&textBox, CYAN);
