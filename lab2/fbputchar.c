@@ -190,10 +190,14 @@ void fbDrawLine(int row, enum color color)
  */
 void fbPrintTextBox(struct textBox * textBox, enum color color)
 {
-  for(int i=0; i<TEXTBOX_SIZE; i++)
+  for(int i=0; i<TEXTBOX_SIZE/2; i++)
   {
     fbputchar(textBox->text[i], 22, i, color, i==textBox->cursor);
   }  
+  for(int i=TEXTBOX_SIZE/2; i<TEXTBOX_SIZE; i++)
+  {
+    fbputchar(textBox->text[i], 23, i-TEXTBOX_SIZE/2, color, i==textBox->cursor);
+  } 
 }
 
 
@@ -217,8 +221,15 @@ void fbClear()
  */
 void fbScrollUp(int rows)
 {
-  
+//unsigned char *pixel, *left = framebuffer + (row * FONT_HEIGHT * 2 + fb_vinfo.yoffset) * fb_finfo.line_length + (col * FONT_WIDTH * 2 + fb_vinfo.xoffset) * BITS_PER_PIXEL / 8;
+
+  int dividingLineRow = 21;
+  for (int r=0; r<dividingLineRow; r++)
+  {
+    int k = 0;
+  }
 }
+
 
 /* 8 X 16 console font from /lib/kbd/consolefonts/lat0-16.psfu.gz
 

@@ -3,7 +3,7 @@
 
 #include "usbkeyboard.h"
 
-#define TEXTBOX_SIZE 64
+#define TEXTBOX_SIZE 128
 
 
 struct textBox
