@@ -91,6 +91,10 @@ int main()
   initTextBox(&textBox);
   fbDrawLine(21, WHITE);  //Draw line to seperate textbox
   
+  //Test string wrapping
+  char longString[512] = "C-Can you... Can you hear me? Uh... Can you hear me? Uh, can you hear me? Hi, it's me! So you know how I've been practicing piano and stuff?";
+  fbputs(longString, 4, 0, RED);  
+
   /* Look for and handle keypresses */
   for (;;) {
     libusb_interrupt_transfer(keyboard, endpoint_address,
