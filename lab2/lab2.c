@@ -62,6 +62,9 @@ int main()
 
   fbputs("Hello CSEE 4840 World!", 4, 10, PURPLE);
 
+  fbDrawLine(16, BLUE);
+  fbDrawLine(17, RED);
+
   /* Open the keyboard */
   if ( (keyboard = openkeyboard(&endpoint_address)) == NULL ) {
     fprintf(stderr, "Did not find a keyboard\n");
@@ -107,6 +110,9 @@ int main()
       }
     }
   }
+  
+  //Clear frame buffer
+  fbClear();
 
   /* Terminate the network thread */
   pthread_cancel(network_thread);

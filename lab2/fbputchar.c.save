@@ -54,68 +54,13 @@ int fbopen()
 }
 
 /*
- * Set desired pixel color
+ * Sets the desired color for the passed pixel
  */
-void setPixelColor(unsigned char* pixel, enum color color)
+void setColor(unsigned char * pixel, enum color color)
 {
-  switch (color)
-  {
-    case RED:
-      pixel[0] = 0;
-      pixel[1] = 0;
-      pixel[2] = 255;
-      pixel[3] = 0;
-      break;
-    case BLUE:
-      pixel[0] = 255;
-      pixel[1] = 0;
-      pixel[2] = 0;
-      pixel[3] = 0;
-      break;
-    case GREEN:
-      pixel[0] = 0;
-      pixel[1] = 255;
-      pixel[2] = 0;
-      pixel[3] = 0;
-      break;
-    case PURPLE:
-      pixel[0] = 255;
-      pixel[1] = 0;
-      pixel[2] = 255;
-      pixel[3] = 0;
-      break;
-    case YELLOW:
-      pixel[0] = 0;
-      pixel[1] = 255;
-      pixel[2] = 255;
-      pixel[3] = 0;
-      break;
-    case CYAN:
-      pixel[0] = 255;
-      pixel[1] = 255;
-      pixel[2] = 0;
-      pixel[3] = 0;
-      break;
-    case BLACK:
-      pixel[0] = 0;
-      pixel[1] = 0;
-      pixel[2] = 0;
-      pixel[3] = 0;
-      break;
-    case WHITE:
-      pixel[0] = 255;
-      pixel[1] = 255;
-      pixel[2] = 255;
-      pixel[3] = 0;
-      break;
-    default:
-      pixel[0] = 0;
-      pixel[1] = 0;
-      pixel[2] = 0;
-      pixel[3] = 0;
-  }
-}
+  switch(color) {
 
+}
 /*
  * Draw the given character at the given row/column.
  * fbopen() must be called first.
@@ -134,7 +79,10 @@ void fbputchar(char c, int row, int col, enum color color)
     mask = 0x80;
     for (x = 0 ; x < FONT_WIDTH ; x++) {
       if (pixels & mask) {	
-	setPixelColor(pixel, color);
+	pixel[0] = 255; /* Red */
+        pixel[1] = 255; /* Green */
+        pixel[2] = 255; /* Blue */
+        pixel[3] = 0;
       } else {
 	pixel[0] = 0;
         pixel[1] = 0;
@@ -143,7 +91,10 @@ void fbputchar(char c, int row, int col, enum color color)
       }
       pixel += 4;
       if (pixels & mask) {
-	setPixelColor(pixel, color);
+	pixel[0] = 255; /* Red */
+        pixel[1] = 255; /* Green */
+        pixel[2] = 255; /* Blue */
+        pixel[3] = 0;
       } else {
 	pixel[0] = 0;
         pixel[1] = 0;
@@ -161,39 +112,11 @@ void fbputchar(char c, int row, int col, enum color color)
  * Draw the given string at the given row/column.
  * String must fit on a single line: wrap-around is not handled.
  */
-void fbputs(const char *s, int row, int col, enum color color)
+void fbputs(const char *s, int row, int col)
 {
   char c;
-  while ((c = *s++) != 0) fbputchar(c, row, col++, color);
+  while ((c = *s++) != 0) fbputchar(c, row, col++);
 }
-
-
-/*
- * Drawns a line at the desired row
- */
-void fbDrawLine(int row, enum color color)
-{
-  for (int col=0; col<64; col++)
-  {
-    fbputchar('_', row, col, color);
-  }
-}
-
-
-/*
- * Clears the frame buffer
- */
-void fbClear()
-{
-  for(int row=0; row<24; row++)
-  {
-    for(int col=0; col<64; col++)
-    {
-      fbputchar('\0', row, col, BLACK);
-    }
-  }
-}
-
 
 /* 8 X 16 console font from /lib/kbd/consolefonts/lat0-16.psfu.gz
 
