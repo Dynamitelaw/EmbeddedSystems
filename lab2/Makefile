@@ -20,7 +20,7 @@ lab2.tar.gz : $(TARFILES)
 lab2.o : lab2.c fbputchar.h usbkeyboard.h textBox.h
 fbputchar.o : fbputchar.c fbputchar.h
 usbkeyboard.o : usbkeyboard.c usbkeyboard.h
-textBox.o : textBox.c textBox.h
+textBox.o : textBox.c textBox.h keyBindings.h usbkeyboard.h
 
 .PHONY : clean
 clean :

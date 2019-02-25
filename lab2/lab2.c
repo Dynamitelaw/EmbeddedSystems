@@ -102,13 +102,14 @@ int main()
   //Textbox testing  
   struct textBox textBox;
   initTextBox(&textBox);
-  snprintf(textBox.text, TEXTBOX_SIZE, "hello world");
-  textBox.cursor = 6;
+  //snprintf(textBox.text, TEXTBOX_SIZE, "hello world");
+  //textBox.cursor = 6;
 
-  printf("%s\n", textBox.text);
+  //printf("%s\n", textBox.text);
   //processDelete(&textBox);
-  insertCharacter(&textBox, 'C');
-  printf("%s\n", textBox.text);
+  //insertCharacter(&textBox, 'C');
+  //printf("%s\n", textBox.text);
+  //fbPrintTextBox(&textBox, PURPLE);
   
   /* Look for and handle keypresses */
   for (;;) {
@@ -120,6 +121,8 @@ int main()
 	      packet.keycode[1]);
       printf("=>%s\n", keystate);
       fbputs(keystate, 6, 0, CYAN);
+      tbKeypress(&textBox, &packet);  //Process keypress in textbox
+      fbPrintTextBox(&textBox, CYAN);
       if (packet.keycode[0] == 0x29) { /* ESC pressed? */
 	break;
       }

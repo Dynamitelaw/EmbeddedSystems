@@ -1,4 +1,5 @@
 #include "textBox.h"
+#include "keyBindings.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -11,7 +12,7 @@ void initTextBox(struct textBox * textBox)
 }
 
 
-void processBackspace(struct textBox * textBox)
+void tbBackspace(struct textBox * textBox)
 {
   if (textBox->cursor != 0)
   {
@@ -35,7 +36,7 @@ void processBackspace(struct textBox * textBox)
 }
 
 
-void processDelete(struct textBox * textBox)
+void tbDelete(struct textBox * textBox)
 {
   char newText[TEXTBOX_SIZE]; //Buffer where the next state of the textbox is stored
   memset(newText, 0, TEXTBOX_SIZE);
@@ -43,7 +44,7 @@ void processDelete(struct textBox * textBox)
 
   for (int oldCurs=0; oldCurs<TEXTBOX_SIZE; oldCurs++)
   {
-    if (oldCurs != (textBox->cursor + 1))
+    if (oldCurs != textBox->cursor)
     {
       //This character should not be removed. Copy over to new text
       newText[newCurs] = textBox->text[oldCurs];
@@ -55,7 +56,7 @@ void processDelete(struct textBox * textBox)
 }
 
 
-void insertCharacter(struct textBox * textBox, char character)
+void tbInsert(struct textBox * textBox, char character)
 {
   char newText[TEXTBOX_SIZE]; //Buffer where the next state of the textbox is stored
   memset(newText, 0, TEXTBOX_SIZE);
@@ -76,13 +77,14 @@ void insertCharacter(struct textBox * textBox, char character)
   }
 
   memcpy(textBox->text, newText, TEXTBOX_SIZE);  //Overwrite text
+  textBox->cursor = textBox->cursor + 1;
 }
 
 
 /*
  * Decriment cursor position on leftArrow
  */
-void leftArrow(struct textBox * textBox)
+void tbLeftArrow(struct textBox * textBox)
 {
   if (textBox->cursor != 0)
   {
@@ -94,7 +96,7 @@ void leftArrow(struct textBox * textBox)
 /*
  * Incriment cursor position on rightArrow
  */
-void rightArrow(struct textBox * textBox)
+void tbRightArrow(struct textBox * textBox)
 {  
   if (textBox->cursor < TEXTBOX_SIZE)
   {
@@ -102,3 +104,346 @@ void rightArrow(struct textBox * textBox)
   }
 }
 
+
+/*
+ * Process a keypress in the textbox
+ */
+void tbKeypress(struct textBox * textBox, struct usb_keyboard_packet * packet)
+{
+  uint8_t keycode = packet->keycode[0];
+  
+  //Remove characters, move cursor, or send message
+  switch (keycode)
+  {
+    case KEY_BACK:
+      tbBackspace(textBox);
+      break;
+    case KEY_DEL:
+      tbDelete(textBox);
+      break;
+    case KEY_LEFT:
+      tbLeftArrow(textBox);
+      break;
+    case KEY_RIGHT:
+      tbRightArrow(textBox);
+      break;
+    case KEY_ENTER:
+      //Send message
+      
+      //Clear textbox
+      initTextBox(textBox);
+      break;
+  }
+  
+  //Insert new character into textbox
+  if (packet->modifiers)  //shift key
+  {
+    switch (keycode)
+    {
+      //Letters
+      case KEY_A:
+        tbInsert(textBox, 'A');
+        break;
+      case KEY_B:
+        tbInsert(textBox, 'B');
+        break;
+      case KEY_C:
+        tbInsert(textBox, 'C');
+        break;
+      case KEY_D:
+        tbInsert(textBox, 'D');
+        break;
+      case KEY_E:
+        tbInsert(textBox, 'E');
+        break;
+      case KEY_F:
+        tbInsert(textBox, 'F');
+        break;
+      case KEY_G:
+        tbInsert(textBox, 'G');
+        break;
+      case KEY_H:
+        tbInsert(textBox, 'H');
+        break;
+      case KEY_I:
+        tbInsert(textBox, 'I');
+        break;
+      case KEY_J:
+        tbInsert(textBox, 'J');
+        break;
+      case KEY_K:
+        tbInsert(textBox, 'K');
+        break;
+      case KEY_L:
+        tbInsert(textBox, 'L');
+        break;
+      case KEY_M:
+        tbInsert(textBox, 'M');
+        break;
+      case KEY_N:
+        tbInsert(textBox, 'N');
+        break;
+      case KEY_O:
+        tbInsert(textBox, 'O');
+        break;
+      case KEY_P:
+        tbInsert(textBox, 'P');
+        break;
+      case KEY_Q:
+        tbInsert(textBox, 'Q');
+        break;
+      case KEY_R:
+        tbInsert(textBox, 'R');
+        break;
+      case KEY_S:
+        tbInsert(textBox, 'S');
+        break;
+      case KEY_T:
+        tbInsert(textBox, 'T');
+        break;
+      case KEY_U:
+        tbInsert(textBox, 'U');
+        break;
+      case KEY_V:
+        tbInsert(textBox, 'V');
+        break;
+      case KEY_W:
+        tbInsert(textBox, 'W');
+        break;
+      case KEY_X:
+        tbInsert(textBox, 'X');
+        break;
+      case KEY_Y:
+        tbInsert(textBox, 'Y');
+        break;
+      case KEY_Z:
+        tbInsert(textBox, 'Z');
+        break;
+      case KEY_SPACE:
+        tbInsert(textBox, ' ');
+        break;
+        
+      //Numbers
+      case KEY_ATILDA:
+        tbInsert(textBox, '~');
+        break;
+      case KEY_1:
+        tbInsert(textBox, '!');
+        break;
+      case KEY_2:
+        tbInsert(textBox, '@');
+        break;
+      case KEY_3:
+        tbInsert(textBox, '#');
+        break;
+      case KEY_4:
+        tbInsert(textBox, '$');
+        break;
+      case KEY_5:
+        tbInsert(textBox, '%');
+        break;
+      case KEY_6:
+        tbInsert(textBox, '^');
+        break;
+      case KEY_7:
+        tbInsert(textBox, '&');
+        break;
+      case KEY_8:
+        tbInsert(textBox, '*');
+        break;
+      case KEY_9:
+        tbInsert(textBox, '(');
+        break;
+      case KEY_0:
+        tbInsert(textBox, ')');
+        break;
+      case KEY_MINUS:
+        tbInsert(textBox, '_');
+        break;
+      case KEY_EQUALS:
+        tbInsert(textBox, '+');
+        break;
+        
+      //Others
+      case KEY_LBRACKET:
+        tbInsert(textBox, '{');
+        break;
+      case KEY_RBRACKET:
+        tbInsert(textBox, '}');
+        break;
+      case KEY_BACKSLASH:
+        tbInsert(textBox, '|');
+        break;
+      case KEY_COLON:
+        tbInsert(textBox, ':');
+        break;
+      case KEY_QUOTE:
+        tbInsert(textBox, '"');
+        break;
+      case KEY_COMMA:
+        tbInsert(textBox, '<');
+        break;
+      case KEY_PERIOD:
+        tbInsert(textBox, '>');
+        break;
+      case KEY_QUESTION:
+        tbInsert(textBox, '?');
+        break;
+    }
+  }
+  else
+  {
+    switch (keycode)
+    {
+      //Letters
+      case KEY_A:
+        tbInsert(textBox, 'a');
+        break;
+      case KEY_B:
+        tbInsert(textBox, 'b');
+        break;
+      case KEY_C:
+        tbInsert(textBox, 'c');
+        break;
+      case KEY_D:
+        tbInsert(textBox, 'd');
+        break;
+      case KEY_E:
+        tbInsert(textBox, 'e');
+        break;
+      case KEY_F:
+        tbInsert(textBox, 'f');
+        break;
+      case KEY_G:
+        tbInsert(textBox, 'g');
+        break;
+      case KEY_H:
+        tbInsert(textBox, 'h');
+        break;
+      case KEY_I:
+        tbInsert(textBox, 'i');
+        break;
+      case KEY_J:
+        tbInsert(textBox, 'j');
+        break;
+      case KEY_K:
+        tbInsert(textBox, 'k');
+        break;
+      case KEY_L:
+        tbInsert(textBox, 'l');
+        break;
+      case KEY_M:
+        tbInsert(textBox, 'm');
+        break;
+      case KEY_N:
+        tbInsert(textBox, 'n');
+        break;
+      case KEY_O:
+        tbInsert(textBox, 'o');
+        break;
+      case KEY_P:
+        tbInsert(textBox, 'p');
+        break;
+      case KEY_Q:
+        tbInsert(textBox, 'q');
+        break;
+      case KEY_R:
+        tbInsert(textBox, 'r');
+        break;
+      case KEY_S:
+        tbInsert(textBox, 's');
+        break;
+      case KEY_T:
+        tbInsert(textBox, 't');
+        break;
+      case KEY_U:
+        tbInsert(textBox, 'u');
+        break;
+      case KEY_V:
+        tbInsert(textBox, 'v');
+        break;
+      case KEY_W:
+        tbInsert(textBox, 'w');
+        break;
+      case KEY_X:
+        tbInsert(textBox, 'x');
+        break;
+      case KEY_Y:
+        tbInsert(textBox, 'y');
+        break;
+      case KEY_Z:
+        tbInsert(textBox, 'z');
+        break;
+      case KEY_SPACE:
+        tbInsert(textBox, ' ');
+        break;
+
+      //Numbers
+      case KEY_ATILDA:
+        tbInsert(textBox, '`');
+        break;
+      case KEY_1:
+        tbInsert(textBox, '1');
+        break;
+      case KEY_2:
+        tbInsert(textBox, '2');
+        break;
+      case KEY_3:
+        tbInsert(textBox, '3');
+        break;
+      case KEY_4:
+        tbInsert(textBox, '4');
+        break;
+      case KEY_5:
+        tbInsert(textBox, '5');
+        break;
+      case KEY_6:
+        tbInsert(textBox, '6');
+        break;
+      case KEY_7:
+        tbInsert(textBox, '7');
+        break;
+      case KEY_8:
+        tbInsert(textBox, '8');
+        break;
+      case KEY_9:
+        tbInsert(textBox, '9');
+        break;
+      case KEY_0:
+        tbInsert(textBox, '0');
+        break;
+      case KEY_MINUS:
+        tbInsert(textBox, '-');
+        break;
+      case KEY_EQUALS:
+        tbInsert(textBox, '=');
+        break;
+        
+      //Others
+      case KEY_LBRACKET:
+        tbInsert(textBox, '[');
+        break;
+      case KEY_RBRACKET:
+        tbInsert(textBox, ']');
+        break;
+      case KEY_BACKSLASH:
+        tbInsert(textBox, '\\');
+        break;
+      case KEY_COLON:
+        tbInsert(textBox, ';');
+        break;
+      case KEY_QUOTE:
+        tbInsert(textBox, '\'');
+        break;
+      case KEY_COMMA:
+        tbInsert(textBox, ',');
+        break;
+      case KEY_PERIOD:
+        tbInsert(textBox, '.');
+        break;
+      case KEY_QUESTION:
+        tbInsert(textBox, '/');
+        break;
+    }
+  }
+}

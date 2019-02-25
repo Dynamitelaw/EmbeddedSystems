@@ -10,6 +10,7 @@
  */
 
 #include "fbputchar.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -122,8 +123,9 @@ void setPixelColor(unsigned char* pixel, enum color color)
  * 
  * invert: set this to 1 to invert the background and character colors
  */
-void fbputchar(char c, int row, int col, enum color color, int invert)
+void fbputchar(char cin, int row, int col, enum color color, int invert)
 {
+  char c = (cin == 0) ? ' ' : cin; //Replace null characters with spaces
   int x, y;
   unsigned char pixels, *pixelp = font + FONT_HEIGHT * c;
   unsigned char mask;
@@ -180,6 +182,18 @@ void fbDrawLine(int row, enum color color)
   {
     fbputchar('_', row, col, color, FALSE);
   }
+}
+
+
+/*
+ * Prints the given textbox on the second to last line
+ */
+void fbPrintTextBox(struct textBox * textBox, enum color color)
+{
+  for(int i=0; i<TEXTBOX_SIZE; i++)
+  {
+    fbputchar(textBox->text[i], 22, i, color, i==textBox->cursor);
+  }  
 }
 
 
