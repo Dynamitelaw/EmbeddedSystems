@@ -212,6 +212,14 @@ void fbClear()
 }
 
 
+/*
+ * Scrolls up the message screen above the dividing line
+ */
+void fbScrollUp(int rows)
+{
+  
+}
+
 /* 8 X 16 console font from /lib/kbd/consolefonts/lat0-16.psfu.gz
 
 od --address-radix=n --width=16 -v -t x1 -j 4 -N 2048 lat0-16.psfu

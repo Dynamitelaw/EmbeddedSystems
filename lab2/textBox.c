@@ -99,7 +99,7 @@ void tbLeftArrow(struct textBox * textBox)
  */
 void tbRightArrow(struct textBox * textBox)
 {  
-  if (textBox->cursor < TEXTBOX_SIZE)
+  if (textBox->cursor < strlen(textBox->text))
   {
     textBox->cursor = textBox->cursor + 1;
   }
