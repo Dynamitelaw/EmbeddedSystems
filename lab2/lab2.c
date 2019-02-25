@@ -5,7 +5,7 @@
  * Name/UNI: Please Changeto Yourname (pcy2301)
  */
 #include "fbputchar.h"
-#include "mylist.h"
+#include "textBox.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -99,11 +99,15 @@ int main()
   /* Start the network thread */
   pthread_create(&network_thread, NULL, network_thread_f, NULL);
 
-  //Initialize linked-list to store current user text
-  struct List userText;
-  initList(&userText);
+  //Textbox testing  
+  struct textBox textBox;
+  snprintf(textBox.text, TEXTBOX_SIZE, "hello world");
+  textBox.cursor = 6;
+
+  printf("%s\n", textBox.text);
+  processBackspace(&textBox);
+  printf("%s\n", textBox.text);
   
-  addBack(&userText, 
   /* Look for and handle keypresses */
   for (;;) {
     libusb_interrupt_transfer(keyboard, endpoint_address,
