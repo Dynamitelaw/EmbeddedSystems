@@ -93,7 +93,7 @@ int main()
   fbDrawLine(21, WHITE);  //Draw line to seperate textbox
 
 char buffer[BUFFER_SIZE];
-memset(buffer, 0, BUFFER_SIZE)
+memset(buffer, 0, BUFFER_SIZE);
   /* Look for and handle keypresses */
   for (;;) {
     libusb_interrupt_transfer(keyboard, endpoint_address,
