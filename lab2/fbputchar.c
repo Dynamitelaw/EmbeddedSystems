@@ -165,6 +165,10 @@ void fbputs(const char *s, int row, int col, enum color color)
 {
   char c;
   while ((c = *s++) != 0) fbputchar(c, row, col++, color);
+  while (col < 64)
+  {
+    fbputchar(' ', row, col++, BLACK);
+  }
 }
 
 
