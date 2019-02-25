@@ -10,6 +10,7 @@ struct textBox
 {
   int cursor;
   char text[TEXTBOX_SIZE];
+  uint8_t oldKeycode;
 };
 
 void initTextBox(struct textBox * textBox);

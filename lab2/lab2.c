@@ -56,19 +56,6 @@ int main()
     exit(1);
   }
 
-  /*  
-  // Draw rows of asterisks across the top and bottom of the screen 
-  for (col = 0 ; col < 64 ; col++) {
-    fbputchar('*', 0, col, YELLOW, TRUE);
-    fbputchar('*', 23, col, CYAN, FALSE);
-  }
-
-  fbputs("Hello CSEE 4840 World!", 4, 10, PURPLE);
-  */
-
-  //Draw line at bottom of screen
-  fbDrawLine(21, WHITE);
-
   /* Open the keyboard */
   if ( (keyboard = openkeyboard(&endpoint_address)) == NULL ) {
     fprintf(stderr, "Did not find a keyboard\n");
@@ -99,17 +86,10 @@ int main()
   /* Start the network thread */
   pthread_create(&network_thread, NULL, network_thread_f, NULL);
 
-  //Textbox testing  
+  //Instantiate textbox  
   struct textBox textBox;
   initTextBox(&textBox);
-  //snprintf(textBox.text, TEXTBOX_SIZE, "hello world");
-  //textBox.cursor = 6;
-
-  //printf("%s\n", textBox.text);
-  //processDelete(&textBox);
-  //insertCharacter(&textBox, 'C');
-  //printf("%s\n", textBox.text);
-  //fbPrintTextBox(&textBox, PURPLE);
+  fbDrawLine(21, WHITE);  //Draw line to seperate textbox
   
   /* Look for and handle keypresses */
   for (;;) {
@@ -120,9 +100,9 @@ int main()
       sprintf(keystate, "%02x %02x %02x", packet.modifiers, packet.keycode[0],
 	      packet.keycode[1]);
       printf("=>%s\n", keystate);
-      fbputs(keystate, 6, 0, CYAN);
+      fbputs(keystate, 6, 0, WHITE);
       tbKeypress(&textBox, &packet);  //Process keypress in textbox
-      fbPrintTextBox(&textBox, CYAN);
+      fbPrintTextBox(&textBox, CYAN);  //Refresh textbox on screen
       if (packet.keycode[0] == 0x29) { /* ESC pressed? */
 	break;
       }
