@@ -101,11 +101,13 @@ int main()
 
   //Textbox testing  
   struct textBox textBox;
+  initTextBox(&textBox);
   snprintf(textBox.text, TEXTBOX_SIZE, "hello world");
   textBox.cursor = 6;
 
   printf("%s\n", textBox.text);
-  processBackspace(&textBox);
+  //processDelete(&textBox);
+  insertCharacter(&textBox, 'C');
   printf("%s\n", textBox.text);
   
   /* Look for and handle keypresses */
