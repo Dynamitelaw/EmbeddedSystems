@@ -109,7 +109,7 @@ int main()
       }
       if(packet.keycode[0]== KEY_ENTER)
       {
-        int n = write(sockd, buffer, BUFFER_SIZE);
+        int n = write(sockfd, buffer, BUFFER_SIZE);
         fbPrintTextBox(&textBox, CYAN);
         memset(buffer, 0, BUFFER_SIZE);
       }
