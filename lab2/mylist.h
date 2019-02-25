@@ -5,8 +5,9 @@
  * A node in a linked list.
  */
 struct Node {
-    void *data;
+    char data;
     struct Node *next;
+    struct Node *previous;
 };
 
 /*
