@@ -1,6 +1,5 @@
 CFLAGS = -Wall
-#test line
-#I added this line from another computer
+
 OBJECTS = lab2.o fbputchar.o usbkeyboard.o
 
 TARFILES = Makefile lab2.c \
