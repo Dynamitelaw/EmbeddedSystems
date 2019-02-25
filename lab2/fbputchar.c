@@ -54,10 +54,61 @@ int fbopen()
 }
 
 /*
+ * Set desired pixel color
+ */
+void setPixelColor(unsigned char* pixel, enum color color)
+{
+  switch (color)
+  {
+    case RED:
+      pixel[0] = 0;
+      pixel[1] = 0;
+      pixel[2] = 255;
+      pixel[3] = 0;
+      break;
+    case BLUE:
+      pixel[0] = 255;
+      pixel[1] = 0;
+      pixel[2] = 0;
+      pixel[3] = 0;
+      break;
+    case GREEN:
+      pixel[0] = 0;
+      pixel[1] = 255;
+      pixel[2] = 0;
+      pixel[3] = 0;
+      break;
+    case PURPLE:
+      pixel[0] = 255;
+      pixel[1] = 0;
+      pixel[2] = 255;
+      pixel[3] = 0;
+      break;
+    case YELLOW:
+      pixel[0] = 0;
+      pixel[1] = 255;
+      pixel[2] = 255;
+      pixel[3] = 0;
+      break;
+    case CYAN:
+      pixel[0] = 255;
+      pixel[1] = 255;
+      pixel[2] = 0;
+      pixel[3] = 0;
+      break;
+    default:
+      pixel[0] = 0;
+      pixel[1] = 0;
+      pixel[2] = 0;
+      pixel[3] = 0;
+  }
+}
+
+/*
  * Draw the given character at the given row/column.
  * fbopen() must be called first.
  */
-void fbputchar(char c, int row, int col)
+void fbputchar(char c, int row, int col, enum color color)
 {
   int x, y;
   unsigned char pixels, *pixelp = font + FONT_HEIGHT * c;
@@ -71,10 +122,7 @@ void fbputchar(char c, int row, int col)
     mask = 0x80;
     for (x = 0 ; x < FONT_WIDTH ; x++) {
       if (pixels & mask) {	
-	pixel[0] = 255; /* Red */
-        pixel[1] = 255; /* Green */
-        pixel[2] = 255; /* Blue */
-        pixel[3] = 0;
+	setPixelColor(pixel, color);
       } else {
 	pixel[0] = 0;
         pixel[1] = 0;
@@ -83,10 +131,7 @@ void fbputchar(char c, int row, int col)
       }
       pixel += 4;
       if (pixels & mask) {
-	pixel[0] = 255; /* Red */
-        pixel[1] = 255; /* Green */
-        pixel[2] = 255; /* Blue */
-        pixel[3] = 0;
+	setPixelColor(pixel, color);
       } else {
 	pixel[0] = 0;
         pixel[1] = 0;
@@ -104,10 +149,10 @@ void fbputchar(char c, int row, int col)
  * Draw the given string at the given row/column.
  * String must fit on a single line: wrap-around is not handled.
  */
-void fbputs(const char *s, int row, int col)
+void fbputs(const char *s, int row, int col, enum color color)
 {
   char c;
-  while ((c = *s++) != 0) fbputchar(c, row, col++);
+  while ((c = *s++) != 0) fbputchar(c, row, col++, color);
 }
 
 /* 8 X 16 console font from /lib/kbd/consolefonts/lat0-16.psfu.gz

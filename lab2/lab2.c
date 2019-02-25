@@ -56,11 +56,11 @@ int main()
 
   /* Draw rows of asterisks across the top and bottom of the screen */
   for (col = 0 ; col < 64 ; col++) {
-    fbputchar('*', 0, col);
-    fbputchar('*', 23, col);
+    fbputchar('*', 0, col, YELLOW);
+    fbputchar('*', 23, col, CYAN);
   }
 
-  fbputs("Hello CSEE 4840 World!", 4, 10);
+  fbputs("Hello CSEE 4840 World!", 4, 10, PURPLE);
 
   /* Open the keyboard */
   if ( (keyboard = openkeyboard(&endpoint_address)) == NULL ) {
@@ -101,7 +101,7 @@ int main()
       sprintf(keystate, "%02x %02x %02x", packet.modifiers, packet.keycode[0],
 	      packet.keycode[1]);
       printf("%s\n", keystate);
-      fbputs(keystate, 6, 0);
+      fbputs(keystate, 6, 0, CYAN);
       if (packet.keycode[0] == 0x29) { /* ESC pressed? */
 	break;
       }
@@ -125,7 +125,7 @@ void *network_thread_f(void *ignored)
   while ( (n = read(sockfd, &recvBuf, BUFFER_SIZE - 1)) > 0 ) {
     recvBuf[n] = '\0';
     printf("%s", recvBuf);
-    fbputs(recvBuf, 8, 0);
+    fbputs(recvBuf, 8, 0, YELLOW);
   }
 
   return NULL;

@@ -7,8 +7,10 @@
 #define FBOPEN_MMAP -4         /* Couldn't mmap the framebuffer memory */
 #define FBOPEN_BPP -5          /* Unexpected bits-per-pixel */
 
+enum color {RED, GREEN, BLUE, WHITE, PURPLE, YELLOW, CYAN};
+
 extern int fbopen(void);
-extern void fbputchar(char, int, int);
-extern void fbputs(const char *, int, int);
+extern void fbputchar(char, int, int, enum color color);
+extern void fbputs(const char *, int, int, enum color color);
 
 #endif
