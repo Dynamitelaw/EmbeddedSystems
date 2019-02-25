@@ -92,6 +92,8 @@ int main()
   initTextBox(&textBox);
   fbDrawLine(21, WHITE);  //Draw line to seperate textbox
 
+char buffer[BUFFER_SIZE];
+memset(buffer, 0, BUFFER_SIZE)
   /* Look for and handle keypresses */
   for (;;) {
     libusb_interrupt_transfer(keyboard, endpoint_address,
@@ -110,7 +112,6 @@ int main()
       if(packet.keycode[0]== KEY_ENTER)
       {
         int n = write(sockfd, buffer, BUFFER_SIZE);
-        fbPrintTextBox(&textBox, CYAN);
         memset(buffer, 0, BUFFER_SIZE);
       }
     }
