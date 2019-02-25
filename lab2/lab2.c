@@ -30,7 +30,7 @@
  *
  * http://beej.us/guide/bgnet/output/html/singlepage/bgnet.html
  * http://www.thegeekstuff.com/2011/12/c-socket-programming/
- * 
+ *
  */
 
 int sockfd; /* Socket file descriptor */
@@ -61,7 +61,7 @@ int main()
     fprintf(stderr, "Did not find a keyboard\n");
     exit(1);
   }
-    
+
   /* Create a TCP communications socket */
   if ( (sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
     fprintf(stderr, "Error: Could not create socket\n");
@@ -86,14 +86,10 @@ int main()
   /* Start the network thread */
   pthread_create(&network_thread, NULL, network_thread_f, NULL);
 
-  //Instantiate textbox  
+  //Instantiate textbox
   struct textBox textBox;
   initTextBox(&textBox);
   fbDrawLine(21, WHITE);  //Draw line to seperate textbox
-  
-  //Test string wrapping
-  char longString[512] = "C-Can you... Can you hear me? Uh... Can you hear me? Uh, can you hear me? Hi, it's me! So you know how I've been practicing piano and stuff?";
-  fbputs(longString, 4, 0, RED);  
 
   /* Look for and handle keypresses */
   for (;;) {
@@ -108,11 +104,17 @@ int main()
       tbKeypress(&textBox, &packet);  //Process keypress in textbox
       fbPrintTextBox(&textBox, CYAN);  //Refresh textbox on screen
       if (packet.keycode[0] == 0x29) { /* ESC pressed? */
-	break;
+	       break;
+      }
+      if(packet.keycode[0]== 0x40)
+      {
+        int n = write(sockd, buffer, BUFFER_SIZE);
+        fbPrintTextBox(&textBox, CYAN);
+        memset(buffer, 0, BUFFER_SIZE);
       }
     }
   }
-  
+
   //Clear frame buffer
   fbClear();
 
@@ -138,4 +140,3 @@ void *network_thread_f(void *ignored)
 
   return NULL;
 }
-
