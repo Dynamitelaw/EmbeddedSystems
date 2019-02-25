@@ -119,8 +119,10 @@ void setPixelColor(unsigned char* pixel, enum color color)
 /*
  * Draw the given character at the given row/column.
  * fbopen() must be called first.
+ * 
+ * invert: set this to 1 to invert the background and character colors
  */
-void fbputchar(char c, int row, int col, enum color color)
+void fbputchar(char c, int row, int col, enum color color, int invert)
 {
   int x, y;
   unsigned char pixels, *pixelp = font + FONT_HEIGHT * c;
@@ -134,22 +136,19 @@ void fbputchar(char c, int row, int col, enum color color)
     mask = 0x80;
     for (x = 0 ; x < FONT_WIDTH ; x++) {
       if (pixels & mask) {	
-	setPixelColor(pixel, color);
-      } else {
-	pixel[0] = 0;
-        pixel[1] = 0;
-        pixel[2] = 0;
-        pixel[3] = 0;
+	setPixelColor(pixel, invert ? BLACK : color);
+      } 
+      else {
+        setPixelColor(pixel, invert ? color: BLACK);
       }
       pixel += 4;
       if (pixels & mask) {
-	setPixelColor(pixel, color);
-      } else {
-	pixel[0] = 0;
-        pixel[1] = 0;
-        pixel[2] = 0;
-        pixel[3] = 0;
+	setPixelColor(pixel, invert ? BLACK : color);
       }
+      else { 
+        setPixelColor(pixel, invert ? color : BLACK);
+      }
+
       pixel += 4;
       mask >>= 1;
     }
@@ -164,10 +163,10 @@ void fbputchar(char c, int row, int col, enum color color)
 void fbputs(const char *s, int row, int col, enum color color)
 {
   char c;
-  while ((c = *s++) != 0) fbputchar(c, row, col++, color);
+  while ((c = *s++) != 0) fbputchar(c, row, col++, color, FALSE);
   while (col < 64)
   {
-    fbputchar(' ', row, col++, BLACK);
+    fbputchar(' ', row, col++, BLACK, FALSE);
   }
 }
 
@@ -179,7 +178,7 @@ void fbDrawLine(int row, enum color color)
 {
   for (int col=0; col<64; col++)
   {
-    fbputchar('_', row, col, color);
+    fbputchar('_', row, col, color, FALSE);
   }
 }
 
@@ -193,7 +192,7 @@ void fbClear()
   {
     for(int col=0; col<64; col++)
     {
-      fbputchar('\0', row, col, BLACK);
+      fbputchar('\0', row, col, BLACK, FALSE);
     }
   }
 }

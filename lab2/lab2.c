@@ -56,11 +56,11 @@ int main()
     exit(1);
   }
 
-  /*
+  /*  
   // Draw rows of asterisks across the top and bottom of the screen 
   for (col = 0 ; col < 64 ; col++) {
-    fbputchar('*', 0, col, YELLOW);
-    fbputchar('*', 23, col, CYAN);
+    fbputchar('*', 0, col, YELLOW, TRUE);
+    fbputchar('*', 23, col, CYAN, FALSE);
   }
 
   fbputs("Hello CSEE 4840 World!", 4, 10, PURPLE);
