@@ -232,9 +232,10 @@ void fbScrollUp(int rows)
 //unsigned char *pixel, *left = framebuffer + (row * FONT_HEIGHT * 2 + fb_vinfo.yoffset) * fb_finfo.line_length + (col * FONT_WIDTH * 2 + fb_vinfo.xoffset) * BITS_PER_PIXEL / 8;
 
   int dividingLineRow = 21;
-  for (int r=0; r<dividingLineRow; r++)
+  for (int r=0; r<dividingLineRow-1; r++)
   {
-    int k = 0;
+    //Current row pointer
+    char * currentRow = 0;
   }
 }
 
