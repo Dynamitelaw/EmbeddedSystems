@@ -21,10 +21,10 @@
  * the chat server you are connecting to
  */
 /* micro36.ee.columbia.edu */
-#define SERVER_HOST "128.59.148.182"
+//#define SERVER_HOST "128.59.148.182"
+#define SERVER_HOST "160.39.134.254"
 #define SERVER_PORT 42000
 
-#define BUFFER_SIZE 128
 
 /*
  * References:
@@ -92,8 +92,6 @@ int main()
   initTextBox(&textBox);
   fbDrawLine(21, WHITE);  //Draw line to seperate textbox
 
-char buffer[BUFFER_SIZE];
-memset(buffer, 0, BUFFER_SIZE);
   /* Look for and handle keypresses */
   for (;;) {
     libusb_interrupt_transfer(keyboard, endpoint_address,
@@ -104,15 +102,17 @@ memset(buffer, 0, BUFFER_SIZE);
 	      packet.keycode[1]);
       printf("=>%s\n", keystate);
       fbputs(keystate, 6, 0, WHITE);
+
+      //Send message if ENTER is pressed
+      if(packet.keycode[0]== KEY_ENTER)
+      {
+        int n = write(sockfd, textBox.text, TEXTBOX_SIZE);
+      }
+      
       tbKeypress(&textBox, &packet);  //Process keypress in textbox
       fbPrintTextBox(&textBox, CYAN);  //Refresh textbox on screen
       if (packet.keycode[0] == 0x29) { /* ESC pressed? */
 	       break;
-      }
-      if(packet.keycode[0]== KEY_ENTER)
-      {
-        int n = write(sockfd, buffer, BUFFER_SIZE);
-        memset(buffer, 0, BUFFER_SIZE);
       }
     }
   }
