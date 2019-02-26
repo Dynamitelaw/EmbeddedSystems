@@ -102,7 +102,7 @@ int main()
       sprintf(keystate, "%02x %02x %02x", packet.modifiers, packet.keycode[0],
 	      packet.keycode[1]);
       printf("=>%s\n", keystate);
-      fbputs(keystate, 6, 0, WHITE, 0);
+      //fbputs(keystate, 6, 0, WHITE, 0);
 
       //Send message if ENTER is pressed
       if(packet.keycode[0]== KEY_ENTER)
@@ -141,7 +141,7 @@ void *network_thread_f(void *ignored)
   while ( (n = read(sockfd, &recvBuf, BUFFER_SIZE - 1)) > 0 ) {
     recvBuf[n] = '\0';
     printf("%s", recvBuf);
-    fbputs(recvBuf, 8, 0, YELLOW, 0);
+    fbputs(recvBuf, 20, 0, WHITE, 1);
   }
 
   return NULL;
