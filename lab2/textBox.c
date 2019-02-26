@@ -139,6 +139,7 @@ void tbKeypress(struct textBox * textBox, struct usb_keyboard_packet * packet)
     }
   
     //Insert new character into textbox
+
     if (packet->modifiers)  //shift key
     {
       switch (keycode)
