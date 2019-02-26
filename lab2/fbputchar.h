@@ -25,5 +25,6 @@ extern void fbDrawLine(int row, enum color color);
 void fbPrintTextBox(struct textBox * textBox, enum color color);
 
 extern void fbClear();
+void fbScrollUp();
 
 #endif

@@ -92,7 +92,7 @@ int main()
   struct textBox textBox;
   initTextBox(&textBox);
   fbDrawLine(21, WHITE);  //Draw line to seperate textbox
-
+  
   /* Look for and handle keypresses */
   for (;;) {
     libusb_interrupt_transfer(keyboard, endpoint_address,

@@ -132,6 +132,7 @@ void fbputchar(char cin, int row, int col, enum color color, int invert)
   unsigned char *pixel, *left = framebuffer +
     (row * FONT_HEIGHT * 2 + fb_vinfo.yoffset) * fb_finfo.line_length +
     (col * FONT_WIDTH * 2 + fb_vinfo.xoffset) * BITS_PER_PIXEL / 8;
+   
   for (y = 0 ; y < FONT_HEIGHT * 2 ; y++, left += fb_finfo.line_length) {
     pixels = *pixelp;
     pixel = left;
@@ -225,18 +226,14 @@ void fbClear()
 
 
 /*
- * Scrolls up the message screen above the dividing line
+ * Scrolls up the message screen above the dividing line by one row
  */
-void fbScrollUp(int rows)
+void fbScrollUp()
 {
 //unsigned char *pixel, *left = framebuffer + (row * FONT_HEIGHT * 2 + fb_vinfo.yoffset) * fb_finfo.line_length + (col * FONT_WIDTH * 2 + fb_vinfo.xoffset) * BITS_PER_PIXEL / 8;
 
-  int dividingLineRow = 21;
-  for (int r=0; r<dividingLineRow-1; r++)
-  {
-    //Current row pointer
-    char * currentRow = 0;
-  }
+  unsigned char * left = framebuffer + (FONT_HEIGHT * 2 + fb_vinfo.yoffset) * fb_finfo.line_length;
+  memcpy(framebuffer, left, (20 * FONT_HEIGHT * 2 + fb_vinfo.yoffset) * fb_finfo.line_length + (64 * FONT_WIDTH * 2 + fb_vinfo.xoffset) * BITS_PER_PIXEL / 8);
 }
 
 
