@@ -16,7 +16,7 @@ enum color {BLACK, WHITE, RED, GREEN, BLUE, PURPLE, YELLOW, CYAN};
 
 extern int fbopen(void);
 extern void fbputchar(char, int, int, enum color color, int invert);
-extern void fbputs(const char *, int, int, enum color color);
+extern void fbputs(const char *, int, int, enum color color, uint8_t autoScroll);
 extern void fbDrawLine(int row, enum color color);
 
 /*

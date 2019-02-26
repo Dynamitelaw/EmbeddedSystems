@@ -163,7 +163,7 @@ void fbputchar(char cin, int row, int col, enum color color, int invert)
  * Draw the given string at the given row/column.
  * String must fit on a single line: wrap-around is not handled.
  */
-void fbputs(const char *s, int row, int col, enum color color)
+void fbputs(const char *s, int row, int col, enum color color, uint8_t autoScroll)
 {
   char c;
   while ((c = *s++) != 0)
@@ -171,7 +171,8 @@ void fbputs(const char *s, int row, int col, enum color color)
     fbputchar(c, row, col++, color, FALSE);
     if (col == 64)
     {
-      row++;
+      if (autoScroll) fbScrollUp();
+      else row++;
       col = 0;
     }
   }
