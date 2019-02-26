@@ -139,8 +139,11 @@ void tbKeypress(struct textBox * textBox, struct usb_keyboard_packet * packet)
     }
   
     //Insert new character into textbox
+    
+    //Determine if shift key is pressed
+    uint8_t shiftMask = 0x22;  //00100010b
 
-    if (packet->modifiers)  //shift key
+    if (packet->modifiers & shiftMask)  //shift key
     {
       switch (keycode)
       {
