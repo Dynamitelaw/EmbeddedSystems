@@ -24,7 +24,7 @@
 #define SERVER_HOST "128.59.148.182"
 #define SERVER_PORT 42000
 
-#define BUFFER_SIZE 128 
+#define BUFFER_SIZE 128
 
 
 /*
@@ -92,7 +92,7 @@ int main()
   struct textBox textBox;
   initTextBox(&textBox);
   fbDrawLine(21, WHITE);  //Draw line to seperate textbox
-  
+
   /* Look for and handle keypresses */
   for (;;) {
     libusb_interrupt_transfer(keyboard, endpoint_address,
@@ -109,10 +109,15 @@ int main()
       {
         int n = write(sockfd, textBox.text, TEXTBOX_SIZE);
         //Write exception later
+        if(n<0)
+        {
+          fprintf(stderr, "Write Failed N<0. Check Network.");
+          fbputs("Write Failed N<0. Check Network.",20, 0, RED, 1);
+        }
         fbScrollUp();
         fbputs(textBox.text, 20, 0, GREEN, 1);
       }
-      
+
       tbKeypress(&textBox, &packet);  //Process keypress in textbox
       fbPrintTextBox(&textBox, CYAN);  //Refresh textbox on screen
       if (packet.keycode[0] == 0x29) { /* ESC pressed? */
