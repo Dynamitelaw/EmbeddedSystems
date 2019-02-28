@@ -16,6 +16,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
+#include <string.h>
 
 #include <linux/fb.h>
 
@@ -125,7 +126,8 @@ void setPixelColor(unsigned char* pixel, enum color color)
  */
 void fbputchar(char cin, int row, int col, enum color color, int invert)
 {
-  char c = (cin == 0) ? ' ' : cin; //Replace null characters with spaces
+  char c = ((cin == 0) || (cin == 10)) ? ' ' : cin; //Replace null characters and newline feed characters with spaces
+  //printf("  %c = %d\n", cin, cin);
   int x, y;
   unsigned char pixels, *pixelp = font + FONT_HEIGHT * c;
   unsigned char mask;

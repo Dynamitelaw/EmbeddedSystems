@@ -45,7 +45,7 @@ void *network_thread_f(void *);
 
 int main()
 {
-  int err, col;
+  int err;
 
   struct sockaddr_in serv_addr;
 
@@ -101,9 +101,8 @@ int main()
     if (transferred == sizeof(packet)) {
       sprintf(keystate, "%02x %02x %02x", packet.modifiers, packet.keycode[0],
 	      packet.keycode[1]);
-      printf("=>%s\n", keystate);
-      //fbputs(keystate, 6, 0, WHITE, 0);
-
+      //printf("=>%s\n", keystate);
+      
       //Send message if ENTER is pressed
       if(packet.keycode[0]== KEY_ENTER)
       {
@@ -116,6 +115,7 @@ int main()
         }
         fbScrollUp();
         fbputs(textBox.text, 20, 0, GREEN, 1);
+        printf("%s\n", textBox.text);
       }
 
       tbKeypress(&textBox, &packet);  //Process keypress in textbox
@@ -146,7 +146,9 @@ void *network_thread_f(void *ignored)
   while ( (n = read(sockfd, &recvBuf, BUFFER_SIZE - 1)) > 0 ) {
     recvBuf[n] = '\0';
     printf("%s", recvBuf);
-    fbputs(recvBuf, 20, 0, WHITE, 1);
+    fbScrollUp();
+    enum color color = (recvBuf[0] == '#') ? YELLOW : WHITE;
+    fbputs(recvBuf, 20, 0, color, 1);
   }
 
   return NULL;
