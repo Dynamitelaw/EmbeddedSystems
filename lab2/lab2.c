@@ -2,8 +2,10 @@
  *
  * CSEE 4840 Lab 2 for 2019
  *
- * Name/UNI: Please Changeto Yourname (pcy2301)
+ * Name/UNI: Jose Rubianes (jer2201)
+ *           Varun Varahabhotla (vv2282)
  */
+
 #include "fbputchar.h"
 #include "textBox.h"
 #include "keyBindings.h"
@@ -21,6 +23,7 @@
  * the chat server you are connecting to
  */
 /* micro36.ee.columbia.edu */
+
 #define SERVER_HOST "128.59.148.182"
 #define SERVER_PORT 42000
 
@@ -102,6 +105,7 @@ int main()
       sprintf(keystate, "%02x %02x %02x", packet.modifiers, packet.keycode[0],
 	      packet.keycode[1]);
       //printf("=>%s\n", keystate);
+      //printf("=> [%d, %d, %d, %d, %d, %d]\n", packet.keycode[0], packet.keycode[1], packet.keycode[2], packet.keycode[3], packet.keycode[4], packet.keycode[5]);
       
       //Send message if ENTER is pressed
       if(packet.keycode[0]== KEY_ENTER)
@@ -118,7 +122,7 @@ int main()
         printf("%s\n", textBox.text);
       }
 
-      tbKeypress(&textBox, &packet);  //Process keypress in textbox
+      tbKeyboardPacket(&textBox, &packet);  //Process keypress in textbox
       fbPrintTextBox(&textBox, CYAN);  //Refresh textbox on screen
       if (packet.keycode[0] == 0x29) { /* ESC pressed? */
 	       break;
@@ -145,7 +149,7 @@ void *network_thread_f(void *ignored)
   /* Receive data */
   while ( (n = read(sockfd, &recvBuf, BUFFER_SIZE - 1)) > 0 ) {
     recvBuf[n] = '\0';
-    printf("%s", recvBuf);
+    printf("%s\n", recvBuf);
     fbScrollUp();
     enum color color = (recvBuf[0] == '#') ? YELLOW : WHITE;
     fbputs(recvBuf, 20, 0, color, 1);

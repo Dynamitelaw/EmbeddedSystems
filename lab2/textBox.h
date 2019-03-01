@@ -1,3 +1,4 @@
+
 #ifndef _TEXTBOX_H
 #define _TEXTBOX_H
 
@@ -19,7 +20,8 @@ void tbDelete(struct textBox * textBox);
 void tbInsert(struct textBox * textBox, char character);
 void tbLeftArrow(struct textBox * texBox);
 void tbRghtArrow(struct textBox * textBox);
-void tbKeypress(struct textBox * textBox, struct usb_keyboard_packet * packet);
+void tbKeyboardPacket(struct textBox * textBox, struct usb_keyboard_packet * packet);
+void tbKeypress(struct textBox * textBox, struct usb_keyboard_packet * packet, uint8_t keycode);
 
 
 #endif

@@ -57,6 +57,9 @@ void tbDelete(struct textBox * textBox)
 }
 
 
+/* 
+ * Insert a new character into the textbox
+ */
 void tbInsert(struct textBox * textBox, char character)
 {
   char newText[TEXTBOX_SIZE]; //Buffer where the next state of the textbox is stored
@@ -105,16 +108,51 @@ void tbRightArrow(struct textBox * textBox)
   }
 }
 
+/*
+ * Process an incoming keyboard packet
+ * Impliments 6 key rollover
+ */
+void tbKeyboardPacket(struct textBox * textBox, struct usb_keyboard_packet * packet)
+{
+  char * keycodes[7];
+  memcpy(keycodes, packet->keycode, 6);
+  keycodes[6] = 0;
+  
+  int newKeycodeLength = strlen((const char *) keycodes);
+  
+  if(newKeycodeLength > 0)
+  {
+    //keys have been pressed
+    
+    //Determine which keys are new
+    int startingIndex = 0;
+    if (textBox->oldKeycode)
+    {
+      for (int j=0; j<6; j++)
+      {
+        startingIndex = (packet->keycode[j] == textBox->oldKeycode) ? packet->keycode[j] : startingIndex;
+      }
+    }
+
+    //Process new keys
+    for(int i=startingIndex; i<newKeycodeLength; i++)
+    {
+      tbKeypress(textBox, packet, packet->keycode[i]);
+      textBox->oldKeycode = packet->keycode[i];
+    }
+  }
+  else
+  {
+    textBox->oldKeycode = 0;
+  }
+}
+
 
 /*
- * Process a keypress in the textbox
+ * Process a single keypress in the textbox
  */
-void tbKeypress(struct textBox * textBox, struct usb_keyboard_packet * packet)
+void tbKeypress(struct textBox * textBox, struct usb_keyboard_packet * packet, uint8_t keycode)
 {
-  uint8_t keycode = packet->keycode[0];
-  
-  if (keycode != textBox->oldKeycode)  //Don't allow users to hold down keys
-  {
     //Remove characters, move cursor, or send message
     switch (keycode)
     {
@@ -452,7 +490,5 @@ void tbKeypress(struct textBox * textBox, struct usb_keyboard_packet * packet)
           tbInsert(textBox, '/');
           break;
       }
-    }
-    textBox->oldKeycode = keycode;
-  }
+    }  
 }

@@ -1,6 +1,0 @@
-
-struct textBox
-{
-  int cursorPosition;
-  char d
-}
