@@ -1,7 +1,7 @@
-/* This file is auto generated, version 2 */
+/* This file is auto generated, version 1 */
 /* SMP */
 #define UTS_MACHINE "arm"
-#define UTS_VERSION "#2 SMP Sun Feb 3 16:18:07 EST 2019"
-#define LINUX_COMPILE_BY "sedwards"
-#define LINUX_COMPILE_HOST "zaphod"
-#define LINUX_COMPILER "gcc version 6.2.0 (Sourcery CodeBench Lite 2016.11-88)"
+#define UTS_VERSION "#1 SMP Sat Mar 9 22:10:19 UTC 2019"
+#define LINUX_COMPILE_BY "root"
+#define LINUX_COMPILE_HOST "de1-soc"
+#define LINUX_COMPILER "gcc version 5.4.0 20160609 (Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.11)"
