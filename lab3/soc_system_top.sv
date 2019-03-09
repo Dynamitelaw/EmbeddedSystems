@@ -314,10 +314,6 @@ module soc_system_top(
 
    assign TD_RESET_N = SW[0];
 
-   assign {VGA_R, VGA_G, VGA_B} = { 24{ SW[0] } };
-   assign {VGA_BLANK_N, VGA_CLK,
-	   VGA_HS, VGA_SYNC_N, VGA_VS} = { 5{ SW[0] } };
-
 	.vga_r (VGA_R),
 	.vga_g (VGA_G),
 	.vga_b (VGA_B),
