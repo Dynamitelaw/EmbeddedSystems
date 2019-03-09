@@ -2,15 +2,16 @@
 
 #Recombile Verilog code
 echo "#############################"
+echo make clean
+make clean
+
 echo make quartus
 make quartus
-echo "#############################"
 
 #Create rbf
 echo "#############################"
 echo make rbf
 make rbf
-echo "#############################"
 
 #Git push
 echo "#############################"

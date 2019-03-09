@@ -3,6 +3,8 @@
  *
  * Stephen A. Edwards
  * Columbia University
+ * 
+ * Extended by Jose Rubianes (jer2201) & 
  */
 
 module vga_ball(input logic        clk,
@@ -41,7 +43,7 @@ module vga_ball(input logic        clk,
       if (VGA_BLANK_n )
 	if (hcount[10:6] == 5'd3 &&
 	    vcount[9:5] == 5'd3)
-	  {VGA_R, VGA_G, VGA_B} = {8'hff, 8'hff, 8'hff};
+	  {VGA_R, VGA_G, VGA_B} = {8'h00, 8'h00, 8'h00};  //color of ball?
 	else
 	  {VGA_R, VGA_G, VGA_B} =
              {background_r, background_g, background_b};
