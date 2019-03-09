@@ -22,16 +22,16 @@
 //   regarding the use or functionality of this code.
 //
 // ===============================================================
-//           
+//
 //  Terasic Technologies Inc
 
 //  9F., No.176, Sec.2, Gongdao 5th Rd, East Dist, Hsinchu City, 30070. Taiwan
-//  
-//  
-//                     web: http://www.terasic.com/  
+//
+//
+//                     web: http://www.terasic.com/
 //                     email: support@terasic.com
 module soc_system_top(
-		      
+
  ///////// ADC /////////
  inout 	       ADC_CS_N,
  output        ADC_DIN,
@@ -192,7 +192,7 @@ module soc_system_top(
    soc_system soc_system0(
      .clk_clk                      ( CLOCK_50 ),
      .reset_reset_n                ( 1'b1 ),
-			  
+
      .hps_ddr3_mem_a               ( HPS_DDR3_ADDR ),
      .hps_ddr3_mem_ba              ( HPS_DDR3_BA ),
      .hps_ddr3_mem_ck              ( HPS_DDR3_CK_P ),
@@ -209,7 +209,7 @@ module soc_system_top(
      .hps_ddr3_mem_odt             ( HPS_DDR3_ODT ),
      .hps_ddr3_mem_dm              ( HPS_DDR3_DM ),
      .hps_ddr3_oct_rzqin           ( HPS_DDR3_RZQ ),
-     
+
      .hps_hps_io_emac1_inst_TX_CLK ( HPS_ENET_GTX_CLK ),
      .hps_hps_io_emac1_inst_TXD0   ( HPS_ENET_TX_DATA[0] ),
      .hps_hps_io_emac1_inst_TXD1   ( HPS_ENET_TX_DATA[1] ),
@@ -224,14 +224,14 @@ module soc_system_top(
      .hps_hps_io_emac1_inst_RXD1   ( HPS_ENET_RX_DATA[1]  ),
      .hps_hps_io_emac1_inst_RXD2   ( HPS_ENET_RX_DATA[2]  ),
      .hps_hps_io_emac1_inst_RXD3   ( HPS_ENET_RX_DATA[3]  ),
-              
+
      .hps_hps_io_sdio_inst_CMD     ( HPS_SD_CMD          ),
      .hps_hps_io_sdio_inst_D0      ( HPS_SD_DATA[0]      ),
      .hps_hps_io_sdio_inst_D1      ( HPS_SD_DATA[1]      ),
      .hps_hps_io_sdio_inst_CLK     ( HPS_SD_CLK          ),
      .hps_hps_io_sdio_inst_D2      ( HPS_SD_DATA[2]      ),
      .hps_hps_io_sdio_inst_D3      ( HPS_SD_DATA[3]      ),
-     
+
      .hps_hps_io_usb1_inst_D0      ( HPS_USB_DATA[0]     ),
      .hps_hps_io_usb1_inst_D1      ( HPS_USB_DATA[1]     ),
      .hps_hps_io_usb1_inst_D2      ( HPS_USB_DATA[2]     ),
@@ -244,21 +244,21 @@ module soc_system_top(
      .hps_hps_io_usb1_inst_STP     ( HPS_USB_STP         ),
      .hps_hps_io_usb1_inst_DIR     ( HPS_USB_DIR         ),
      .hps_hps_io_usb1_inst_NXT     ( HPS_USB_NXT         ),
-     
+
      .hps_hps_io_spim1_inst_CLK    ( HPS_SPIM_CLK  ),
      .hps_hps_io_spim1_inst_MOSI   ( HPS_SPIM_MOSI ),
      .hps_hps_io_spim1_inst_MISO   ( HPS_SPIM_MISO ),
      .hps_hps_io_spim1_inst_SS0    ( HPS_SPIM_SS   ),
-     
+
      .hps_hps_io_uart0_inst_RX     ( HPS_UART_RX     ),
      .hps_hps_io_uart0_inst_TX     ( HPS_UART_TX     ),
-     
+
      .hps_hps_io_i2c0_inst_SDA     ( HPS_I2C1_SDAT     ),
      .hps_hps_io_i2c0_inst_SCL     ( HPS_I2C1_SCLK     ),
-     
+
      .hps_hps_io_i2c1_inst_SDA     ( HPS_I2C2_SDAT     ),
      .hps_hps_io_i2c1_inst_SCL     ( HPS_I2C2_SCLK     ),
-     
+
      .hps_hps_io_gpio_inst_GPIO09  ( HPS_CONV_USB_N ),
      .hps_hps_io_gpio_inst_GPIO35  ( HPS_ENET_INT_N ),
      .hps_hps_io_gpio_inst_GPIO40  ( HPS_LTC_GPIO ),
@@ -275,12 +275,12 @@ module soc_system_top(
    assign ADC_CS_N = SW[1] ? SW[0] : 1'bZ;
    assign ADC_DIN = SW[0];
    assign ADC_SCLK = SW[0];
-   
+
    assign AUD_ADCLRCK = SW[1] ? SW[0] : 1'bZ;
    assign AUD_BCLK = SW[1] ? SW[0] : 1'bZ;
    assign AUD_DACDAT = SW[0];
    assign AUD_DACLRCK = SW[1] ? SW[0] : 1'bZ;
-   assign AUD_XCK = SW[0];      
+   assign AUD_XCK = SW[0];
 
    assign DRAM_ADDR = { 13{ SW[0] } };
    assign DRAM_BA = { 2{ SW[0] } };
@@ -318,5 +318,13 @@ module soc_system_top(
    assign {VGA_BLANK_N, VGA_CLK,
 	   VGA_HS, VGA_SYNC_N, VGA_VS} = { 5{ SW[0] } };
 
-							          
+	.vga_r (VGA_R),
+	.vga_g (VGA_G),
+	.vga_b (VGA_B),
+  .vga_clk (VGA_CLK),
+  .vga_hs (VGA_HS),
+  .vga_vs (VGA_VS),
+  .vga_blank_n (VGA_BLANK_N),
+  .vga_sync_n (VGA_SYNC_N)
+
 endmodule
