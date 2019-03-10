@@ -92,11 +92,12 @@ int main()
   position.y = 3;
   position.x = 0;
   
+  printf("Moving ball...");
   for (int pos=0; pos<30; pos++)
   {
   	position.x = pos;
   	set_ball_position(&position);
-    	print_background_color();
+    	printf("X = %i", pos);
     	usleep(800000);
   }
   
