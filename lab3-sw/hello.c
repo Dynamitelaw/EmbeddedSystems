@@ -45,7 +45,7 @@ void set_ball_position(const vga_ball_position_t *pos)
 {
   vga_ball_arg_t vla;
   vla.position = *pos;
-  if (ioctl(vga_ball_fd, VGA_BALL_WRITE_BACKGROUND, &vla)) {
+  if (ioctl(vga_ball_fd, VGA_BALL_WRITE_POSITION, &vla)) {
       perror("ioctl(VGA_BALL_SET_POSITION) failed");
       return;
   }

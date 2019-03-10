@@ -88,16 +88,31 @@ static long vga_ball_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 	vga_ball_arg_t vla;
 
 	switch (cmd) {
+	//Color
 	case VGA_BALL_WRITE_BACKGROUND:
 		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
 				   sizeof(vga_ball_arg_t)))
 			return -EACCES;
 		write_background(&vla.background);
-		write_position(&vla.position);
 		break;
 
 	case VGA_BALL_READ_BACKGROUND:
 	  	vla.background = dev.background;
+		if (copy_to_user((vga_ball_arg_t *) arg, &vla,
+				 sizeof(vga_ball_arg_t)))
+			return -EACCES;
+		break;
+		
+	//Position
+	case VGA_BALL_WRITE_POSITION:
+		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
+				   sizeof(vga_ball_arg_t)))
+			return -EACCES;
+		write_position(&vla.position);
+		break;
+
+	case VGA_BALL_READ_POSITION:
+	  	vla.position = dev.position;
 		if (copy_to_user((vga_ball_arg_t *) arg, &vla,
 				 sizeof(vga_ball_arg_t)))
 			return -EACCES;

@@ -71,10 +71,10 @@ static void write_background(vga_ball_color_t *background)
  * Write segments of a single digit
  * Assumes digit is in range and the device information has been set up
  */
-static void write_position(vga_ball_position_t *postion)
+static void write_position(vga_ball_position_t *position)
 {
 	iowrite8(position->x, POS_X(dev.virtbase) );
-	iowrite8(position->y, POS_y(dev.virtbase) );
+	iowrite8(position->y, POS_Y(dev.virtbase) );
 	dev.position = *position;
 }
 
@@ -88,6 +88,7 @@ static long vga_ball_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 	vga_ball_arg_t vla;
 
 	switch (cmd) {
+	//Color
 	case VGA_BALL_WRITE_BACKGROUND:
 		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
 				   sizeof(vga_ball_arg_t)))
@@ -96,6 +97,21 @@ static long vga_ball_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		break;
 
 	case VGA_BALL_READ_BACKGROUND:
+	  	vla.background = dev.background;
+		if (copy_to_user((vga_ball_arg_t *) arg, &vla,
+				 sizeof(vga_ball_arg_t)))
+			return -EACCES;
+		break;
+		
+	//Position
+	case VGA_BALL_WRITE_POSITION:
+		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
+				   sizeof(vga_ball_arg_t)))
+			return -EACCES;
+		write_position(&vla.position);
+		break;
+
+	case VGA_BALL_READ_POSITION:
 	  	vla.background = dev.background;
 		if (copy_to_user((vga_ball_arg_t *) arg, &vla,
 				 sizeof(vga_ball_arg_t)))
