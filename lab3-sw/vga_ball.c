@@ -71,10 +71,10 @@ static void write_background(vga_ball_color_t *background)
  * Write segments of a single digit
  * Assumes digit is in range and the device information has been set up
  */
-static void write_position(vga_ball_position_t *postion)
+static void write_position(vga_ball_position_t *position)
 {
 	iowrite8(position->x, POS_X(dev.virtbase) );
-	iowrite8(position->y, POS_y(dev.virtbase) );
+	iowrite8(position->y, POS_Y(dev.virtbase) );
 	dev.position = *position;
 }
 
