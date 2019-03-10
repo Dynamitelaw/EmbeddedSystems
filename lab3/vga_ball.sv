@@ -23,6 +23,7 @@ module vga_ball(input logic        clk,
    logic [9:0]     vcount;
 
    logic [7:0] 	   background_r, background_g, background_b;
+   logic [4:0] ball_x, ball_y;
 	
    vga_counters counters(.clk50(clk), .*);
 
@@ -31,19 +32,28 @@ module vga_ball(input logic        clk,
 	background_r <= 8'h0;
 	background_g <= 8'h0;
 	background_b <= 8'h80;
+	
+	ball_x <= 5'd3;
+	ball_y <= 5'd3;
+	
      end else if (chipselect && write)
        case (address)
+         //background colors
 	 3'h0 : background_r <= writedata;
 	 3'h1 : background_g <= writedata;
 	 3'h2 : background_b <= writedata;
+	 
+	 //ball postion
+	 3'h3 : ball_x <= writedata[4:0];
+	 3'h4 : ball_y <= writedata[4:0];
        endcase
 
    always_comb begin
       {VGA_R, VGA_G, VGA_B} = {8'h0, 8'h0, 8'h0};
       if (VGA_BLANK_n )
-	if (hcount[10:6] == 5'd3 &&
-	    vcount[9:5] == 5'd3)
-	  {VGA_R, VGA_G, VGA_B} = {8'h00, 8'h00, 8'h00};  //color of ball?
+	if (hcount[10:6] == ball_x &&
+	    vcount[9:5] == ball_y)
+	  {VGA_R, VGA_G, VGA_B} = {8'hff, 8'hff, 8'hff};  //color of ball
 	else
 	  {VGA_R, VGA_G, VGA_B} =
              {background_r, background_g, background_b};
