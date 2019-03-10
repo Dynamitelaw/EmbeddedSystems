@@ -44,7 +44,7 @@ void set_background_color(const vga_ball_color_t *c)
 void set_ball_position(const vga_ball_position_t *pos)
 {
   vga_ball_arg_t vla;
-  vla.postion = *pos;
+  vla.position = *pos;
   if (ioctl(vga_ball_fd, VGA_BALL_WRITE_BACKGROUND, &vla)) {
       perror("ioctl(VGA_BALL_SET_POSITION) failed");
       return;
@@ -95,7 +95,7 @@ int main()
   for (int pos=0; pos<30; pos++)
   {
   	position.x = pos;
-  	set_background_postion(&position);
+  	set_ball_position(&position);
     	print_background_color();
     	usleep(800000);
   }
