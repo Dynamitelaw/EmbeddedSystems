@@ -15,8 +15,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#define SCREENBORDER_X 145
-#define SCREENBORDER_Y 105
+#define SCREENBORDER_X 147
+#define SCREENBORDER_Y 107
 
 
 int vga_ball_fd;
