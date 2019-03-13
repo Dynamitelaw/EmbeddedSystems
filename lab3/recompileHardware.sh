@@ -14,6 +14,6 @@ make dtb
 #Git push
 echo "#############################"
 echo "Upload to Github"
-git add *
+git add output_files/*
 git commit -m "compiled new version of hardware files"
 git push
