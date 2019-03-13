@@ -27,9 +27,20 @@ module vga_ball(input logic        clk,
    
    parameter ball_width = 8'd16;
    parameter ball_height = 8'd16;
+   parameter halfWidth = 8'd8;
 	
+   //instantiate counters	
    vga_counters counters(.clk50(clk), .*);
 
+   //Instantiate ball checker
+   logic inInBall;
+   ballChecker checker(.hcount(hcount),
+   	.vcount(vcount), 
+   	.ball_x(ball_x),
+   	.ball_y(ball_y),
+   	.isInBall(isInBall)
+   );
+   
    always_ff @(posedge clk)
      if (reset) begin
 	background_r <= 8'h0;
@@ -51,6 +62,7 @@ module vga_ball(input logic        clk,
 	 3'h4 : ball_y <= writedata;
        endcase
 
+   /*
    always_comb begin
       {VGA_R, VGA_G, VGA_B} = {8'h0, 8'h0, 8'h0};
       if (VGA_BLANK_n )
@@ -63,8 +75,56 @@ module vga_ball(input logic        clk,
 	  {VGA_R, VGA_G, VGA_B} =
              {background_r, background_g, background_b};
    end
+   */
+   
+   always_comb begin
+      {VGA_R, VGA_G, VGA_B} = {8'h0, 8'h0, 8'h0};
+      if (VGA_BLANK_n )
+	if (isInBall)
+	  {VGA_R, VGA_G, VGA_B} = {8'hff, 8'hff, 8'hff};  //color of ball
+	else
+	  {VGA_R, VGA_G, VGA_B} =
+             {background_r, background_g, background_b};
+   end
+   
 	       
 endmodule
+
+module ballChecker(
+	input logic[10:0] hcount, 
+	input logic[9:0] vcount,
+	input logic[7:0] ball_x,
+	input logic[7:0] ball_y,
+	output logic isInBall
+	);
+  
+	parameter radiusSquared = 12'd64;
+	parameter radius = 8'd8;
+	
+	logic[7:0] centerX;
+	logic[7:0] centerY;
+	
+	logic[12:0] distanceSquared;
+	
+	
+	//Calculate center of ball
+	always_comb begin
+		centerX = ball_x + radius;
+		centerY = ball_y + radius;
+	end
+	
+	//Calculate distance from center
+	always_comb begin			   	
+		distanceSquared = ((hcount[10:3] - centerX) * (hcount[10:3] - centerX)) + ((vcount[9:3] - centerY) * (vcount[9:3] - centerY));
+	end
+	
+	//Return whether coordinates are within ball
+	always_comb begin
+		isInBall = distanceSquared <= radiusSquared;
+	end
+	
+endmodule
+  
 
 module vga_counters(
  input logic 	     clk50, reset,
