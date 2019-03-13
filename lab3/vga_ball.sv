@@ -104,7 +104,7 @@ module ballChecker(
 	logic[14:0] centerX;
 	logic[14:0] centerY;
 	
-	logic[16:0] distanceSquared;
+	logic[18:0] distanceSquared;
 	
 	
 	//Calculate center of ball
