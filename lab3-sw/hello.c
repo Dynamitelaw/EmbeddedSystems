@@ -90,12 +90,19 @@ int main()
   //Move ball
   vga_ball_position_t position;
   position.y = 6;
-  position.x = 6;
+  position.x = 0;
 
   printf("Moving ball...\n");
 
 
-
+  for (int pos = position.x; pos<32; pos++)
+  {
+    position.x = pos;
+    set_ball_position(&position);
+    printf("X = %i\n", pos);
+    usleep(40000);
+  }
+  /*
   //perpetual while loop to bounce indefinetly
   while(1){
     //bounce down first, regardless of where it starts.
@@ -109,7 +116,7 @@ int main()
     }
     //picked 10 randomly because bounce movement seems unnatrual if it goes all the way back up.
     //could also do another loop which increments the bounce by 1 less which would eventually lead to the ball not bouncing then exit
-    for(int pos = position.y; pos <10 pos++)
+    for(int pos = position.y; pos <10; pos++)
     {
       position.y = pos;
       set_ball_position(&position);
@@ -119,7 +126,7 @@ int main()
     }
 
   }
-
+  */
 
   printf("VGA BALL Userspace program terminating\n");
   return 0;
