@@ -16,6 +16,8 @@
  *
  * Check code style with
  * checkpatch.pl --file --no-tree vga_ball.c
+ *
+ * Extended by Jose Rubianes (jer2201) & Varun Varahabhotla (vv2282)
  */
 
 #include <linux/module.h>

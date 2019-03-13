@@ -104,13 +104,13 @@ module ballChecker(
 	logic[14:0] centerX;
 	logic[14:0] centerY;
 	
-	logic[16:0] distanceSquared;
+	logic[19:0] distanceSquared;
 	
 	
 	//Calculate center of ball
 	always_comb begin
-		centerX = {ball_x + radius, 2'b0};
-		centerY = {ball_y + radius, 2'b0};
+		centerX = {ball_x, 2'b0};
+		centerY = {ball_y, 2'b0};
 	end
 	
 	//Calculate distance from center

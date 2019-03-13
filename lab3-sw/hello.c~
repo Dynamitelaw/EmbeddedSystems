@@ -4,6 +4,8 @@
  *
  * Stephen A. Edwards
  * Columbia University
+ *
+ * Extended by Jose Rubianes (jer2201) & Varun Varahabhotla (vv2282)
  */
 
 #include <stdio.h>
@@ -15,12 +17,16 @@
 #include <string.h>
 #include <unistd.h>
 
+#define SCREENBORDER_X 155
+#define SCREENBORDER_Y 115
+
+
 int vga_ball_fd;
 
 /* Read and print the background color */
 void print_background_color() {
   vga_ball_arg_t vla;
-  
+
   if (ioctl(vga_ball_fd, VGA_BALL_READ_BACKGROUND, &vla)) {
       perror("ioctl(VGA_BALL_READ_BACKGROUND) failed");
       return;
@@ -77,30 +83,62 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
-
+  
   printf("initial state: ");
   print_background_color();
 
   for (i = 0 ; i < 24 ; i++) {
     set_background_color(&colors[i % COLORS ]);
     print_background_color();
-    usleep(400000);
+    usleep(4000);  
   }
-  
+
   //Move ball
   vga_ball_position_t position;
-  position.y = 3;
-  position.x = 0;
-  
-  printf("Moving ball...\n");
-  for (int pos=0; pos<30; pos++)
+  position.x = 32;
+  position.y = 80;
+  set_ball_position(&position);
+
+  printf("Bouncing ball...\n");
+
+  int xVelocity = 3;
+  int yVelocity = -10;
+
+  int tempX;
+  int tempY;
+
+  while (1)
   {
-  	position.y = pos;
-  	set_ball_position(&position);
-    	printf("Y = %i\n", pos);
-    	usleep(800000);
+    usleep(40000);
+
+    //Check if ball will hit right or left of screen
+    tempX = position.x + xVelocity;
+    if ((tempX >= SCREENBORDER_X) || (tempX <= 4))
+    {
+      xVelocity = -1 * xVelocity;
+      if (tempX >= SCREENBORDER_X) tempX = SCREENBORDER_X;
+      else tempX = 4;
+    }
+    position.x = tempX;
+
+    //Check if ball will hit top or bottom of screen 
+    tempY = position.y + yVelocity;
+    if ((tempY >= SCREENBORDER_Y) || (tempY <= 5))
+    {
+      yVelocity = -1 * yVelocity;
+      if (tempY >= SCREENBORDER_Y) tempY = SCREENBORDER_Y;
+      else tempY = 0;  
+    }
+    else
+    {
+      yVelocity = yVelocity + 1;  //Vertical acceleration to simulate gravity
+    }
+    position.y = tempY;
+    
+
+    //Update ball position
+    set_ball_position(&position);
   }
   
-  printf("VGA BALL Userspace program terminating\n");
   return 0;
 }

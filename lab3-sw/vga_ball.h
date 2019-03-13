@@ -1,3 +1,7 @@
+/*
+ * Extended by Jose Rubianes (jer2201) & Varun Varahabhotla (vv2282)
+ */
+ 
 #ifndef _VGA_BALL_H
 #define _VGA_BALL_H
 

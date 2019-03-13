@@ -4,6 +4,8 @@
  *
  * Stephen A. Edwards
  * Columbia University
+ *
+ * Extended by Jose Rubianes (jer2201) & Varun Varahabhotla (vv2282)
  */
 
 #include <stdio.h>
@@ -85,17 +87,12 @@ int main()
   printf("initial state: ");
   print_background_color();
 
-  //vga_ball_position_t position;
-  //position.x = 0;
-  //position.y = 0;
-  //set_ball_position(&position);
-
   for (i = 0 ; i < 24 ; i++) {
     set_background_color(&colors[i % COLORS ]);
     print_background_color();
     usleep(4000);  
   }
-  //return 0;
+
   //Move ball
   vga_ball_position_t position;
   position.x = 32;
@@ -142,40 +139,6 @@ int main()
     //Update ball position
     set_ball_position(&position);
   }
-
-  for (unsigned char pos = position.y; pos < SCREENBORDER_Y ; pos++)
-  {
-    position.y = pos;
-    set_ball_position(&position);
-    printf("Y = %i\n", pos);
-    usleep(40000);
-  }
-  /*
-  //perpetual while loop to bounce indefinetly
-  while(1){
-    //bounce down first, regardless of where it starts.
-    for (int pos = position.y; pos > -1 ; pos--)
-    {
-      position.y = pos;
-      set_ball_position(&position);
-        printf("Y = %i\n", position.y);
-        printf("X = %i\n", position.x);
-        usleep(4000);
-    }
-    //picked 10 randomly because bounce movement seems unnatrual if it goes all the way back up.
-    //could also do another loop which increments the bounce by 1 less which would eventually lead to the ball not bouncing then exit
-    for(int pos = position.y; pos <10; pos++)
-    {
-      position.y = pos;
-      set_ball_position(&position);
-        printf("Y = %i\n", position.y);
-        printf("X = %i\n", position.x);
-        usleep(4000);
-    }
-
-  }
-  */
-
-  printf("VGA BALL Userspace program terminating\n");
+  
   return 0;
 }

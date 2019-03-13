@@ -4,7 +4,7 @@
  * Stephen A. Edwards
  * Columbia University
  * 
- * Extended by Jose Rubianes (jer2201) & 
+ * Extended by Jose Rubianes (jer2201) & Varun Varahabhotla (vv2282)
  */
 
 module vga_ball(input logic        clk,
@@ -61,21 +61,6 @@ module vga_ball(input logic        clk,
 	 3'h3 : ball_x <= writedata;
 	 3'h4 : ball_y <= writedata;
        endcase
-
-   /*
-   always_comb begin
-      {VGA_R, VGA_G, VGA_B} = {8'h0, 8'h0, 8'h0};
-      if (VGA_BLANK_n )
-	if (
-	      ((hcount[10:3] > ball_x) && (hcount[10:3] < (ball_x+ball_width))) &&
-	      ((vcount[9:2] > ball_y) && (vcount[9:2] < (ball_y+ball_height))) 
-	   )
-	  {VGA_R, VGA_G, VGA_B} = {8'hff, 8'hff, 8'hff};  //color of ball
-	else
-	  {VGA_R, VGA_G, VGA_B} =
-             {background_r, background_g, background_b};
-   end
-   */
    
    always_comb begin
       {VGA_R, VGA_G, VGA_B} = {8'h0, 8'h0, 8'h0};
@@ -90,6 +75,9 @@ module vga_ball(input logic        clk,
 	       
 endmodule
 
+/*
+ * Check h and vcount to see if pixel is within ball
+ */
 module ballChecker(
 	input logic[10:0] hcount, 
 	input logic[9:0] vcount,
@@ -104,13 +92,13 @@ module ballChecker(
 	logic[14:0] centerX;
 	logic[14:0] centerY;
 	
-	logic[18:0] distanceSquared;
+	logic[19:0] distanceSquared;
 	
 	
 	//Calculate center of ball
 	always_comb begin
-		centerX = {ball_x + radius, 2'b0};
-		centerY = {ball_y + radius, 2'b0};
+		centerX = {ball_x, 2'b0};
+		centerY = {ball_y, 2'b0};
 	end
 	
 	//Calculate distance from center
