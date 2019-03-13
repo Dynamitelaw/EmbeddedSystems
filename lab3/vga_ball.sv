@@ -98,24 +98,24 @@ module ballChecker(
 	output logic isInBall
 	);
   
-	parameter radiusSquared = 14'd64;
+	parameter radiusSquared = 14'd256;
 	parameter radius = 14'd8;
 	
 	logic[14:0] centerX;
 	logic[14:0] centerY;
 	
-	logic[14:0] distanceSquared;
+	logic[16:0] distanceSquared;
 	
 	
 	//Calculate center of ball
 	always_comb begin
-		centerX = ball_x + radius;
-		centerY = ball_y + radius;
+		centerX = {ball_x + radius, 2'b0};
+		centerY = {ball_y + radius, 2'b0};
 	end
 	
 	//Calculate distance from center
 	always_comb begin			   	
-		distanceSquared = ((hcount[10:3] - centerX) * (hcount[10:3] - centerX)) + ((vcount[8:3] - centerY) * (vcount[8:3] - centerY));
+		distanceSquared = ((hcount[10:1] - centerX) * (hcount[10:1] - centerX)) + ((vcount[9:0] - centerY) * (vcount[9:0] - centerY));
 	end
 	
 	//Return whether coordinates are within ball

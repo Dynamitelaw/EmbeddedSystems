@@ -1,5 +1,5 @@
 Flow report for soc_system
-Wed Mar 13 16:35:18 2019
+Wed Mar 13 16:53:04 2019
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Standard Edition
 
 
@@ -40,15 +40,15 @@ refer to the applicable agreement for further details.
 +-----------------------------------------------------------------------------------+
 ; Flow Summary                                                                      ;
 +---------------------------------+-------------------------------------------------+
-; Flow Status                     ; Successful - Wed Mar 13 16:35:18 2019           ;
+; Flow Status                     ; Successful - Wed Mar 13 16:53:04 2019           ;
 ; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Standard Edition ;
 ; Revision Name                   ; soc_system                                      ;
 ; Top-level Entity Name           ; soc_system_top                                  ;
 ; Family                          ; Cyclone V                                       ;
 ; Device                          ; 5CSEMA5F31C6                                    ;
 ; Timing Models                   ; Final                                           ;
-; Logic utilization (in ALMs)     ; 272 / 32,070 ( < 1 % )                          ;
-; Total registers                 ; 480                                             ;
+; Logic utilization (in ALMs)     ; 273 / 32,070 ( < 1 % )                          ;
+; Total registers                 ; 484                                             ;
 ; Total pins                      ; 362 / 457 ( 79 % )                              ;
 ; Total virtual pins              ; 0                                               ;
 ; Total block memory bits         ; 0 / 4,065,280 ( 0 % )                           ;
@@ -67,7 +67,7 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 03/13/2019 16:30:18 ;
+; Start date & time ; 03/13/2019 16:47:57 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; soc_system          ;
 +-------------------+---------------------+
@@ -78,7 +78,7 @@ refer to the applicable agreement for further details.
 +--------------------------+--------------------------------------------------------------------------+---------------+--------------------------------+------------+
 ; Assignment Name          ; Value                                                                    ; Default Value ; Entity Name                    ; Section Id ;
 +--------------------------+--------------------------------------------------------------------------+---------------+--------------------------------+------------+
-; COMPILER_SIGNATURE_ID    ; 93180999564651.155250901823944                                           ; --            ; --                             ; --         ;
+; COMPILER_SIGNATURE_ID    ; 93180999564651.155251007726286                                           ; --            ; --                             ; --         ;
 ; HPS_ISW_FILE             ; soc_system/synthesis/submodules/sequencer/sdram_io.pre.h                 ; --            ; soc_system_hps_0_hps_io_border ; --         ;
 ; HPS_ISW_FILE             ; soc_system/synthesis/submodules/sequencer/alt_types.pre.h                ; --            ; soc_system_hps_0_hps_io_border ; --         ;
 ; HPS_ISW_FILE             ; soc_system/synthesis/submodules/sequencer/system.pre.h                   ; --            ; soc_system_hps_0_hps_io_border ; --         ;
@@ -113,7 +113,7 @@ refer to the applicable agreement for further details.
 ; PROJECT_OUTPUT_DIRECTORY ; output_files                                                             ; --            ; --                             ; --         ;
 ; SLD_FILE                 ; soc_system/synthesis/soc_system.regmap                                   ; --            ; --                             ; --         ;
 ; SLD_FILE                 ; soc_system/synthesis/soc_system.debuginfo                                ; --            ; --                             ; --         ;
-; SLD_INFO                 ; QSYS_NAME soc_system HAS_SOPCINFO 1 GENERATION_ID 1552508959             ; --            ; --                             ; --         ;
+; SLD_INFO                 ; QSYS_NAME soc_system HAS_SOPCINFO 1 GENERATION_ID 1552510019             ; --            ; --                             ; --         ;
 ; SOPCINFO_FILE            ; soc_system/synthesis/../../soc_system.sopcinfo                           ; --            ; --                             ; --         ;
 ; SYNTHESIS_ONLY_QIP       ; On                                                                       ; --            ; --                             ; --         ;
 ; TOP_LEVEL_ENTITY         ; soc_system_top                                                           ; soc_system    ; --                             ; --         ;
@@ -125,10 +125,10 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:23     ; 1.0                     ; 1301 MB             ; 00:00:28                           ;
-; Fitter               ; 00:01:07     ; 1.1                     ; 3298 MB             ; 00:01:30                           ;
-; Assembler            ; 00:00:14     ; 1.0                     ; 1111 MB             ; 00:00:10                           ;
-; Total                ; 00:01:44     ; --                      ; --                  ; 00:02:08                           ;
+; Analysis & Synthesis ; 00:00:24     ; 1.0                     ; 1318 MB             ; 00:00:28                           ;
+; Fitter               ; 00:01:14     ; 1.0                     ; 3278 MB             ; 00:01:30                           ;
+; Assembler            ; 00:00:15     ; 1.0                     ; 1113 MB             ; 00:00:09                           ;
+; Total                ; 00:01:53     ; --                      ; --                  ; 00:02:07                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
