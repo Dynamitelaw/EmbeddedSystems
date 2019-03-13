@@ -20,7 +20,7 @@ int vga_ball_fd;
 /* Read and print the background color */
 void print_background_color() {
   vga_ball_arg_t vla;
-  
+
   if (ioctl(vga_ball_fd, VGA_BALL_READ_BACKGROUND, &vla)) {
       perror("ioctl(VGA_BALL_READ_BACKGROUND) failed");
       return;
@@ -86,21 +86,41 @@ int main()
     print_background_color();
     usleep(400000);
   }
-  
+
   //Move ball
   vga_ball_position_t position;
-  position.y = 3;
-  position.x = 0;
-  
+  position.y = 6;
+  position.x = 6;
+
   printf("Moving ball...\n");
-  for (int pos=0; pos<30; pos++)
-  {
-  	position.y = pos;
-  	set_ball_position(&position);
-    	printf("Y = %i\n", pos);
-    	usleep(800000);
+
+
+
+  //perpetual while loop to bounce indefinetly
+  while(1){
+    //bounce down first, regardless of where it starts.
+    for (int pos = position.y; pos > -1 ; pos--)
+    {
+      position.y = pos;
+      set_ball_position(&position);
+        printf("Y = %i\n", position.y);
+        printf("X = %i\n", position.x);
+        usleep(4000);
+    }
+    //picked 10 randomly because bounce movement seems unnatrual if it goes all the way back up.
+    //could also do another loop which increments the bounce by 1 less which would eventually lead to the ball not bouncing then exit
+    for(int pos = position.y; pos <10 pos++)
+    {
+      position.y = pos;
+      set_ball_position(&position);
+        printf("Y = %i\n", position.y);
+        printf("X = %i\n", position.x);
+        usleep(4000);
+    }
+
   }
-  
+
+
   printf("VGA BALL Userspace program terminating\n");
   return 0;
 }
