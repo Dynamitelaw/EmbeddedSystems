@@ -15,8 +15,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#define SCREENBORDER_X 147
-#define SCREENBORDER_Y 107
+#define SCREENBORDER_X 155
+#define SCREENBORDER_Y 115
 
 
 int vga_ball_fd;
@@ -85,21 +85,21 @@ int main()
   printf("initial state: ");
   print_background_color();
 
-  vga_ball_position_t position;
-  position.x = 0;
-  position.y = 0;
-  set_ball_position(&position);
+  //vga_ball_position_t position;
+  //position.x = 0;
+  //position.y = 0;
+  //set_ball_position(&position);
 
   for (i = 0 ; i < 24 ; i++) {
     set_background_color(&colors[i % COLORS ]);
     print_background_color();
-    usleep(400000);  
+    usleep(4000);  
   }
-  return 0;
+  //return 0;
   //Move ball
-  //vga_ball_position_t position;
+  vga_ball_position_t position;
   position.x = 32;
-  position.y = 75;
+  position.y = 80;
   set_ball_position(&position);
 
   printf("Bouncing ball...\n");
@@ -116,17 +116,17 @@ int main()
 
     //Check if ball will hit right or left of screen
     tempX = position.x + xVelocity;
-    if ((tempX >= SCREENBORDER_X) || (tempX <= 0))
+    if ((tempX >= SCREENBORDER_X) || (tempX <= 4))
     {
       xVelocity = -1 * xVelocity;
       if (tempX >= SCREENBORDER_X) tempX = SCREENBORDER_X;
-      else tempX = 0;
+      else tempX = 4;
     }
     position.x = tempX;
 
     //Check if ball will hit top or bottom of screen 
     tempY = position.y + yVelocity;
-    if ((tempY >= SCREENBORDER_Y) || (tempY <= 0))
+    if ((tempY >= SCREENBORDER_Y) || (tempY <= 5))
     {
       yVelocity = -1 * yVelocity;
       if (tempY >= SCREENBORDER_Y) tempY = SCREENBORDER_Y;
