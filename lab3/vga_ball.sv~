@@ -109,8 +109,8 @@ module ballChecker(
 	
 	//Calculate center of ball
 	always_comb begin
-		centerX = hcount[10:3] + radius;
-		centerY = vcount[9:2] + radius;
+		centerX = ball_x + radius;
+		centerY = ball_y + radius;
 	end
 	
 	//Calculate distance from center
