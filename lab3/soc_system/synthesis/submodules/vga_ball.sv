@@ -23,7 +23,10 @@ module vga_ball(input logic        clk,
    logic [9:0]     vcount;
 
    logic [7:0] 	   background_r, background_g, background_b;
-   logic [4:0] ball_x, ball_y;
+   logic [7:0] ball_x, ball_y;
+   
+   parameter ball_width = 64;
+   parameter ball_height = 64;
 	
    vga_counters counters(.clk50(clk), .*);
 
@@ -44,15 +47,17 @@ module vga_ball(input logic        clk,
 	 3'h2 : background_b <= writedata;
 	 
 	 //ball postion
-	 3'h3 : ball_x <= writedata[4:0];
-	 3'h4 : ball_y <= writedata[4:0];
+	 3'h3 : ball_x <= writedata;
+	 3'h4 : ball_y <= writedata;
        endcase
 
    always_comb begin
       {VGA_R, VGA_G, VGA_B} = {8'h0, 8'h0, 8'h0};
       if (VGA_BLANK_n )
-	if (hcount[10:6] == ball_x &&
-	    vcount[9:5] == ball_y)
+	if (
+	      ((hcount[10:3] > ball_x) && (hcount[10:3] < (ball_x+ball_width))) &&
+	      ((vcount[9:2] > ball_y) && (vcount[9:2] < (ball_y+ball_height))) 
+	   )
 	  {VGA_R, VGA_G, VGA_B} = {8'hff, 8'hff, 8'hff};  //color of ball
 	else
 	  {VGA_R, VGA_G, VGA_B} =
