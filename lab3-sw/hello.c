@@ -90,7 +90,7 @@ int main()
   for (i = 0 ; i < 24 ; i++) {
     set_background_color(&colors[i % COLORS ]);
     print_background_color();
-    usleep(4000);  
+    usleep(400000);  
   }
 
   //Move ball
