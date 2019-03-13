@@ -85,14 +85,19 @@ int main()
   printf("initial state: ");
   print_background_color();
 
+  vga_ball_position_t position;
+  position.x = 0;
+  position.y = 0;
+  set_ball_position(&position);
+
   for (i = 0 ; i < 24 ; i++) {
     set_background_color(&colors[i % COLORS ]);
     print_background_color();
     usleep(400000);  
   }
-  
+  return 0;
   //Move ball
-  vga_ball_position_t position;
+  //vga_ball_position_t position;
   position.x = 32;
   position.y = 75;
   set_ball_position(&position);
