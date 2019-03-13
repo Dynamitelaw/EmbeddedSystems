@@ -15,6 +15,10 @@
 #include <string.h>
 #include <unistd.h>
 
+#define SCREENBORDER_X 145
+#define SCREENBORDER_Y 105
+
+
 int vga_ball_fd;
 
 /* Read and print the background color */
@@ -77,29 +81,68 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
-
+  
   printf("initial state: ");
   print_background_color();
 
   for (i = 0 ; i < 24 ; i++) {
     set_background_color(&colors[i % COLORS ]);
     print_background_color();
-    usleep(400000);
+    usleep(400000);  
   }
-
+  
   //Move ball
   vga_ball_position_t position;
-  position.y = 6;
-  position.x = 0;
+  position.x = 32;
+  position.y = 75;
+  set_ball_position(&position);
 
-  printf("Moving ball...\n");
+  printf("Bouncing ball...\n");
 
+  int xVelocity = 3;
+  int yVelocity = -10;
 
-  for (int pos = position.x; pos<32; pos++)
+  int tempX;
+  int tempY;
+
+  while (1)
   {
-    position.x = pos;
+    usleep(40000);
+
+    //Check if ball will hit right or left of screen
+    tempX = position.x + xVelocity;
+    if ((tempX >= SCREENBORDER_X) || (tempX <= 0))
+    {
+      xVelocity = -1 * xVelocity;
+      if (tempX >= SCREENBORDER_X) tempX = SCREENBORDER_X;
+      else tempX = 0;
+    }
+    position.x = tempX;
+
+    //Check if ball will hit top or bottom of screen 
+    tempY = position.y + yVelocity;
+    if ((tempY >= SCREENBORDER_Y) || (tempY <= 0))
+    {
+      yVelocity = -1 * yVelocity;
+      if (tempY >= SCREENBORDER_Y) tempY = SCREENBORDER_Y;
+      else tempY = 0;  
+    }
+    else
+    {
+      yVelocity = yVelocity + 1;  //Vertical acceleration to simulate gravity
+    }
+    position.y = tempY;
+    
+
+    //Update ball position
     set_ball_position(&position);
-    printf("X = %i\n", pos);
+  }
+
+  for (unsigned char pos = position.y; pos < SCREENBORDER_Y ; pos++)
+  {
+    position.y = pos;
+    set_ball_position(&position);
+    printf("Y = %i\n", pos);
     usleep(40000);
   }
   /*
