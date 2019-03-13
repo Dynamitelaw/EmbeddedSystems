@@ -25,8 +25,8 @@ module vga_ball(input logic        clk,
    logic [7:0] 	   background_r, background_g, background_b;
    logic [7:0] ball_x, ball_y;
    
-   parameter ball_width = 64;
-   parameter ball_height = 64;
+   parameter ball_width = 8'd16;
+   parameter ball_height = 8'd16;
 	
    vga_counters counters(.clk50(clk), .*);
 
@@ -36,8 +36,8 @@ module vga_ball(input logic        clk,
 	background_g <= 8'h0;
 	background_b <= 8'h80;
 	
-	ball_x <= 5'd3;
-	ball_y <= 5'd3;
+	ball_x <= 8'd3;
+	ball_y <= 8'd3;
 	
      end else if (chipselect && write)
        case (address)
