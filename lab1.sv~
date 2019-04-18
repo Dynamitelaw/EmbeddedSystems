@@ -49,8 +49,8 @@ module lab1( input logic		  CLOCK_50,
 
 			  
 	//Instantiate audio controller
-	wire [23:0] dac_left_out;
-	
+	wire [23:0] dac_left_out = 24'b0;
+	/*
 	 audio_driver (
 	 	.CLOCK_50(clk), 
 	 	.reset(~KEY[3]), 
@@ -67,7 +67,7 @@ module lab1( input logic		  CLOCK_50,
 	 	.AUD_BCLK, 
 	 	.AUD_ADCDAT, 
 	 	.AUD_DACDAT);
-	 	
+	 	*/
 	 	
 	 //Instantiate hex decoders
 	hex7seg h5( .a(dac_left_out[23:20]),.y(HEX5) ), // left digit
